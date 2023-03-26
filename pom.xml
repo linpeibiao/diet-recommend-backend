@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>icu.xiaohu</groupId>
-    <artifactId>backen-base</artifactId>
+    <artifactId>diet-recommend-backend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
