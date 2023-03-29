@@ -1,4 +1,4 @@
-//package backen_base;
+//package diet_recommend;
 //
 //import com.baomidou.mybatisplus.annotation.DbType;
 //import com.baomidou.mybatisplus.annotation.FieldFill;
