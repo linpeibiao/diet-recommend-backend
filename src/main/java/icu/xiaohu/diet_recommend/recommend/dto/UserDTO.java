@@ -19,14 +19,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
     /** 主键 */
-    private Integer id;
+    private Long id;
     /** 年纪 */
     private Integer age;
     /** 性别 */
-    private String sex;
-    /** 职业 */
-    private String profession;
-    /** 邮编 */
-    private String postcode;
+    private Integer gender;
 
 }

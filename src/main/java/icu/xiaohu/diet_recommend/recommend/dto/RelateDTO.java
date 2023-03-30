@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RelateDTO {
     /** 用户id */
-    private Integer useId;
+    private Long useId;
     /** 物品id */
-    private Integer itemId;
-    /** 指数 */
-    private Integer index;
+    private Long itemId;
+    /** 评分 */
+    private Integer grade;
 
 
 }

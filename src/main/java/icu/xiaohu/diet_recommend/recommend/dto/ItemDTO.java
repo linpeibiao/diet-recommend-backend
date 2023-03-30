@@ -5,19 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 业务项
- *
- * @author TARZAN
- * @version 1.0
- * @date 2020/7/31$ 15:02$
- * @since JDK1.8
+ * 食谱推荐项
+ * @author xiaohu
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemDTO {
     /** 主键 */
-    private Integer id;
+    private Long id;
     /** 名称 */
     private String name;
     /** 日期 */

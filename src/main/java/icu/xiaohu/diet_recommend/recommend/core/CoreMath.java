@@ -21,8 +21,8 @@ public class CoreMath {
      * @param map
      * @return Map<Integer,Double>
      */
-    public static Map<Integer,Double> computeNeighbor(Integer key, Map<Integer,List<RelateDTO>>  map, int type) {
-        Map<Integer,Double> distMap = new TreeMap<>();
+    public static Map<Long,Double> computeNeighbor(Long key, Map<Long,List<RelateDTO>>  map, int type) {
+        Map<Long,Double> distMap = new TreeMap<>();
 
         // 当前用户的评分数据
         List<RelateDTO> userItems=map.get(key);
@@ -56,13 +56,13 @@ public class CoreMath {
             yList.forEach(y->{
                 if(type==0){
                     if(x.getItemId().equals(y.getItemId())){
-                        xs.add(x.getIndex());
-                        ys.add(y.getIndex());
+                        xs.add(x.getGrade());
+                        ys.add(y.getGrade());
                     }
                 }else{
                     if(x.getUseId().equals(y.getUseId())){
-                        xs.add(x.getIndex());
-                        ys.add(y.getIndex());
+                        xs.add(x.getGrade());
+                        ys.add(y.getGrade());
                     }
                 }
             });
