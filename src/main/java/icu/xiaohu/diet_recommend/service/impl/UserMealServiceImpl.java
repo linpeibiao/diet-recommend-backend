@@ -1,8 +1,11 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.mapper.UserMealMapper;
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
+import icu.xiaohu.diet_recommend.service.IMealService;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +24,22 @@ import java.util.List;
 @Service
 public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> implements IUserMealService {
     @Autowired
+    private IMealService mealService;
+    @Autowired
     private UserMealMapper userMealMapper;
+
     @Override
     public List<RelateDTO> getUserMealRelate() {
         List<RelateDTO> userMealRelate = userMealMapper.getUserMealRelate();
         return userMealRelate;
+    }
+
+    @Override
+    public Meal getUserMostLike(Long userId) {
+        QueryWrapper<UserMeal> query = new QueryWrapper<>();
+        query.eq("user_id", userId)
+                .orderByDesc("grade")
+                .last("limit 1");
+        return mealService.getById(this.getOne(query).getMealId());
     }
 }

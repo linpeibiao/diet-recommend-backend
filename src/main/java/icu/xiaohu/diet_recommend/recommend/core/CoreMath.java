@@ -22,7 +22,7 @@ public class CoreMath {
         Map<Long,Double> distMap = new TreeMap<>();
 
         // 当前用户的评分数据
-        List<RelateDTO> userItems=map.get(key);
+        List<RelateDTO> userItems = map.get(key);
         map.forEach((k,v)->{
             //排除此用户
             if(!k.equals(key)){
@@ -46,6 +46,9 @@ public class CoreMath {
      * @return double
      */
     private static double relateDist(List<RelateDTO> xList, List<RelateDTO> yList, int type) {
+        if (xList == null || yList == null){
+            return 0D;
+        }
         // 两个用户有对同一项有评分的话，某项坐标列表，或者用户坐标列表
         List<Integer> xs= new ArrayList();
         List<Integer> ys= new ArrayList();

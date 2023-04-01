@@ -27,6 +27,14 @@ public class ItemCF {
         Map<Long,Double> itemDisMap = CoreMath.computeNeighbor(itemId, itemMap,1);
         //获取关系最近物品
         double maxValue = Collections.max(itemDisMap.values());
+        if (maxValue == 0.0D){
+            return itemDisMap.entrySet()
+                    .stream()
+                    .sorted(Collections.reverseOrder(Map.Entry.comparingByKey())) // 按照key值降序排列
+                    .limit(5) // 取出前5条数据
+                    .map(Map.Entry::getKey) // 取出每个Entry的key值
+                    .collect(Collectors.toList()); // 将key值收集为List
+        }
         return itemDisMap.entrySet().stream().filter(e->e.getValue() == maxValue).map(Map.Entry::getKey).collect(Collectors.toList());
     }
 }

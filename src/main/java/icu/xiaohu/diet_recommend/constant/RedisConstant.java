@@ -22,6 +22,6 @@ public class RedisConstant {
     /**
      * 用户信息缓存有效时间
      */
-    public static final long LOGIN_USER_TTL = 30L;
+    public static final long LOGIN_USER_TTL = 24L * 60L;
 
 }
