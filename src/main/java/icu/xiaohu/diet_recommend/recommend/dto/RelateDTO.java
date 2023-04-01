@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RelateDTO {
     /** 用户id */
-    private Long useId;
+    private Long userId;
     /** 物品id */
-    private Long itemId;
+    private Long mealId;
     /** 评分 */
     private Integer grade;
-
-
 }

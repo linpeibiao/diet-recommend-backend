@@ -22,11 +22,11 @@ public class ItemCF {
      */
     public static List<Long> recommend(Long itemId, List<RelateDTO> list) {
         //按物品分组
-        Map<Long, List<RelateDTO>>  itemMap = list.stream().collect(Collectors.groupingBy(RelateDTO::getItemId));
+        Map<Long, List<RelateDTO>> itemMap = list.stream().collect(Collectors.groupingBy(RelateDTO::getMealId));
         //获取其他物品与当前物品的关系值
-        Map<Long,Double>  itemDisMap = CoreMath.computeNeighbor(itemId, itemMap,1);
+        Map<Long,Double> itemDisMap = CoreMath.computeNeighbor(itemId, itemMap,1);
         //获取关系最近物品
-        double maxValue=Collections.max(itemDisMap.values());
+        double maxValue = Collections.max(itemDisMap.values());
         return itemDisMap.entrySet().stream().filter(e->e.getValue()==maxValue).map(Map.Entry::getKey).collect(Collectors.toList());
     }
 

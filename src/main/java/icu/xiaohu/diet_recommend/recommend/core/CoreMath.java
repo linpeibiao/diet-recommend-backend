@@ -55,12 +55,12 @@ public class CoreMath {
         xList.forEach(x->{
             yList.forEach(y->{
                 if(type==0){
-                    if(x.getItemId().equals(y.getItemId())){
+                    if(x.getMealId().equals(y.getMealId())){
                         xs.add(x.getGrade());
                         ys.add(y.getGrade());
                     }
                 }else{
-                    if(x.getUseId().equals(y.getUseId())){
+                    if(x.getUserId().equals(y.getUserId())){
                         xs.add(x.getGrade());
                         ys.add(y.getGrade());
                     }
