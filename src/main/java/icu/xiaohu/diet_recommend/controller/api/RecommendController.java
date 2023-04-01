@@ -27,8 +27,19 @@ public class RecommendController {
 
     @ApiOperation("基于用户行为推荐")
     @PostMapping("/user-cf")
-    public Result<List<Meal>> recommendByUserCf(Long id){
-        List<Meal> meals = recommend.userCfRecommend(id);
+    public Result<List<Meal>> recommendByUserCf(Long userid){
+        List<Meal> meals = recommend.userCfRecommend(userid);
+        return Result.success(meals);
+    }
+
+
+    @ApiOperation("特别推荐")
+    @PostMapping("/meal-cf")
+    /**
+     * 基于饮食相似度推荐
+     */
+    public Result<List<Meal>> recommendByMealCf(Long mealId){
+        List<Meal> meals = recommend.itemCfRecommend(mealId);
         return Result.success(meals);
     }
 

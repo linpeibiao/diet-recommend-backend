@@ -27,7 +27,7 @@ public class UserCF {
         Map<Long,Double>  userDisMap = CoreMath.computeNeighbor(userId, userMap,0);
         //获取关系最近的用户
         double maxValue=Collections.max(userDisMap.values());
-        Set<Long> userIds=userDisMap.entrySet().stream().filter(e->e.getValue()==maxValue).map(Map.Entry::getKey).collect(Collectors.toSet());
+        Set<Long> userIds = userDisMap.entrySet().stream().filter(e->e.getValue() == maxValue).map(Map.Entry::getKey).collect(Collectors.toSet());
         //取关系最近的用户
         Long nearestUserId = userIds.stream().findAny().orElse(null);
         if(nearestUserId==null){

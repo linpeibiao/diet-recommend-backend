@@ -2,10 +2,7 @@ package icu.xiaohu.diet_recommend.recommend.core;
 
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.IntStream;
 
 
@@ -54,7 +51,7 @@ public class CoreMath {
         List<Integer> ys= new ArrayList();
         xList.forEach(x->{
             yList.forEach(y->{
-                if(type==0){
+                if(type == 0){
                     if(x.getMealId().equals(y.getMealId())){
                         xs.add(x.getGrade());
                         ys.add(y.getGrade());
@@ -92,10 +89,9 @@ public class CoreMath {
         double Exy= IntStream.range(0,n).mapToDouble(i->xs.get(i)*ys.get(i)).sum();
         double numerator=Exy-Ex*Ey/n;
         double denominator=Math.sqrt((Ex2-Math.pow(Ex,2)/n)*(Ey2-Math.pow(Ey,2)/n));
-        if (denominator==0) {
+        if (denominator == 0) {
             return 0D;
         }
         return numerator/denominator;
     }
-
 }

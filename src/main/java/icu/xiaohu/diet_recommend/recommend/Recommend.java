@@ -50,7 +50,7 @@ public class Recommend {
      * @author tarzan
      * @date 2020年07月31日 17:28:06
      */
-    public List<Meal>  itemCfRecommend(long itemId){
+    public List<Meal> itemCfRecommend(long itemId){
         List<RelateDTO> data = recommendService.getUserMealData();
         List<Long> recommendations = ItemCF.recommend(itemId, data);
         return mealService.list().stream().filter(meal -> recommendations.contains(meal.getId())).collect(Collectors.toList());
