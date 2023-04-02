@@ -94,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String codeKey = LOGIN_CODE_KEY + phone;
         String code = stringRedisTemplate.opsForValue().get(codeKey);
         if (code != null){
-            return;
+            return code;
         }
         // 若缓存中没有，创建一个验证码保存至redis
         code = CodeGenerator.getSixBitRandom();

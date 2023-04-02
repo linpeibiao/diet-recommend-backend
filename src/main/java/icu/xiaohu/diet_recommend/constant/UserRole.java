@@ -2,7 +2,7 @@ package icu.xiaohu.diet_recommend.constant;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.AllArgsConstructor;
+import lombok .AllArgsConstructor;
 import lombok.Getter;
 
 /**
