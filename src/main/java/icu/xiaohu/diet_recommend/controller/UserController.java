@@ -85,7 +85,7 @@ public class UserController {
     @GetMapping("/sendCode/{phone}")
     public Result<String> sendCode(@PathVariable("phone") String phone){
         String code = userService.sendCode(phone);
-        return Result.success("发送验证码成功：" + code);
+        return Result.success(code);
     }
 
     @ApiOperation("获取用户列表")
