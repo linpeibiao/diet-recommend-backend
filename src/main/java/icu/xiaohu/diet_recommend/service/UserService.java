@@ -23,7 +23,7 @@ public interface UserService extends IService<User> {
      * 发送短信验证码
      * @param phone
      */
-    void sendCode(String phone);
+    String sendCode(String phone);
 
     /**
      * 修改用户信息

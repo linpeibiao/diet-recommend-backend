@@ -84,8 +84,8 @@ public class UserController {
     @ApiOperation("发送手机验证码")
     @GetMapping("/sendCode/{phone}")
     public Result<String> sendCode(@PathVariable("phone") String phone){
-        userService.sendCode(phone);
-        return Result.success("发送成功");
+        String code = userService.sendCode(phone);
+        return Result.success("发送验证码成功：" + code);
     }
 
     @ApiOperation("获取用户列表")

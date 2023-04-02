@@ -85,7 +85,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public void sendCode(String phone) {
+    public String sendCode(String phone) {
         // 判断手机号合法
         if (StringUtils.isAnyEmpty(phone)){
             throw new BusinessException(ResultCode.PARAMS_ERROR);
@@ -101,6 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         stringRedisTemplate.opsForValue().set(codeKey, code, LOGIN_CODE_TTL, TimeUnit.MINUTES);
         // 将验证码发送至用户手机
         log.info("向{}发送短信验证码{}", phone, code);
+        return code;
     }
 
     @Override
