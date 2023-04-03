@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
@@ -23,8 +25,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static icu.xiaohu.diet_recommend.constant.RedisConstant.*;
@@ -212,6 +213,38 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setAccount(account);
         user.setPassword(encryptPassword);
         return save(user);
+    }
+
+    /**
+     * 禁止用户通过用户id
+     * @param ids
+     */
+    @Override
+    public boolean banUserByIds(List<Long> ids) {
+        List<User> userList = new ArrayList<>();
+        for (Long id : ids) {
+            User user = new User();
+            user.setId(id);
+            user.setStatus(1);
+            userList.add(user);
+        }
+        return this.updateBatchById(userList, 100);
+    }
+
+    /**
+     * 解禁用户通过用户id
+     * @param ids
+     */
+    @Override
+    public boolean unBanUserByIds(List<Long> ids) {
+        List<User> userList = new ArrayList<>();
+        for (Long id : ids) {
+            User user = new User();
+            user.setId(id);
+            user.setStatus(0);
+            userList.add(user);
+        }
+        return this.updateBatchById(userList, 100);
     }
 
     private String loginCommonWork(User user, String keyword){

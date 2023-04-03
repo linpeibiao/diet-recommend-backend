@@ -5,6 +5,8 @@ import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.vo.LoginUser;
 
+import java.util.List;
+
 /**
 * @author xiaohu
 * @description 针对表【t_user】的数据库操作Service
@@ -52,4 +54,18 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean register(LoginUser loginUser);
+
+    /**
+     * 解禁禁用用户
+     * @param ids
+     * @return
+     */
+    boolean banUserByIds(List<Long> ids);
+
+    /**
+     *
+     * @param ids
+     * @return
+     */
+    boolean unBanUserByIds(List<Long> ids);
 }

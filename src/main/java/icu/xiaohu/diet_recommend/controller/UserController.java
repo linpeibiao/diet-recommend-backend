@@ -101,4 +101,26 @@ public class UserController {
         userList.forEach(user -> user.setPassword(""));
         return Result.success(userList);
     }
+
+    @ApiOperation("用户状态禁用")
+    @PostMapping("/ban")
+    @AuthCheck(mustRole = UserRole.ADMIN)
+    public Result<List<User>> banUserByIds(@RequestBody List<Long> userIdList){
+        if (userIdList.isEmpty()){
+            return null;
+        }
+        boolean isSuccess = userService.banUserByIds(userIdList);
+        return Result.success(isSuccess);
+    }
+
+    @ApiOperation("用户状态解除禁用")
+    @PostMapping("/unBan")
+    @AuthCheck(mustRole = UserRole.ADMIN)
+    public Result<List<User>> unBanUserByIds(@RequestBody List<Long> userIdList){
+        if (userIdList.isEmpty()){
+            return null;
+        }
+        boolean isSuccess = userService.unBanUserByIds(userIdList);
+        return Result.success(isSuccess);
+    }
 }

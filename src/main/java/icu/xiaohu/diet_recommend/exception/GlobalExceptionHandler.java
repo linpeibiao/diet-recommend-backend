@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result error(Exception e) {
         e.printStackTrace();
-        return Result.fail("系统异常");
+        return Result.fail("系统异常,请联系管理员");
     }
 
     @ExceptionHandler(BusinessException.class)
