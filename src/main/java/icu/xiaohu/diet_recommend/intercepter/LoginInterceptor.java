@@ -33,6 +33,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("登录拦截器被执行");
         String url = request.getRequestURI();
+        log.info(url);
         if (url.contains("login") || url.contains("sendCode") || url.contains("register")){
             return true;
         }

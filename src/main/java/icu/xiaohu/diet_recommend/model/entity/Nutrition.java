@@ -6,56 +6,40 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 营养成分表
  * </p>
  *
  * @author xiaohu
- * @since 2023-03-29
+ * @since 2023-04-03
  */
 @Getter
 @Setter
-@TableName("t_material")
-public class Material implements Serializable {
+@TableName("t_nutrition")
+public class Nutrition implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键id
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 名称
+     * 营养名称
      */
     private String name;
 
     /**
-     * 价格
+     * 单位
      */
-    private BigDecimal price;
-
-    /**
-     * 类型
-     */
-    private String type;
-
-    /**
-     * 描述
-     */
-    private String description;
-
-    /**
-     * 营养成分id
-     */
-    private Long nutritionId;
+    private String unit;
 
     /**
      * 备用字段1

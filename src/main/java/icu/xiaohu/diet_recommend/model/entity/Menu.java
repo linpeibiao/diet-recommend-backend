@@ -58,6 +58,11 @@ public class Menu implements Serializable {
     private String url;
 
     /**
+     * 营养价值id
+     */
+    private Long nutritionId;
+
+    /**
      * 备用字段1
      */
     private String backup1;
