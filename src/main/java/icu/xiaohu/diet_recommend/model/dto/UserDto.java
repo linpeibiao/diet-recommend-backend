@@ -66,6 +66,13 @@ public class UserDto {
     private Long roleId;
 
     /**
+     * 用户角色
+     */
+    private UserRole userRole;
+
+
+
+    /**
      * 角色名称
      */
     private UserRole roleName;

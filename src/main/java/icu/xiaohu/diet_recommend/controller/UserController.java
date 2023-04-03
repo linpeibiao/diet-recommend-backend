@@ -1,6 +1,8 @@
 package icu.xiaohu.diet_recommend.controller;
 
 
+import icu.xiaohu.diet_recommend.anotation.AuthCheck;
+import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.result.Result;
@@ -90,6 +92,7 @@ public class UserController {
 
     @ApiOperation("获取用户列表")
     @PostMapping("/list-by-ids")
+    @AuthCheck(mustRole = UserRole.ADMIN)
     public Result<List<User>> getUserList(@RequestBody List<Long> userIdList){
         if (userIdList.isEmpty()){
             return null;

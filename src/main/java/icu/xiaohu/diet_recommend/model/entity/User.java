@@ -69,6 +69,9 @@ public class User implements Serializable {
     @ApiModelProperty(value = "用户角色ID")
     private Long roleId;
 
+    @ApiModelProperty(value = "用户角色")
+    private Integer role;
+
     /**
      * 角色名称
      */

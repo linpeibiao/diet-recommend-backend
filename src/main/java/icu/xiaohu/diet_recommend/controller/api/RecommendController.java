@@ -23,7 +23,7 @@ import java.util.List;
 
 @Api(tags = "饮食推荐api")
 @RestController
-@RequestMapping("/recommend")
+@RequestMapping("/api/recommend")
 public class RecommendController {
     @Autowired
     private Recommend recommend;
