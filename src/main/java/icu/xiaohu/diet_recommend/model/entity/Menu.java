@@ -63,6 +63,11 @@ public class Menu implements Serializable {
     private Long nutritionId;
 
     /**
+     * 创建用户id
+     */
+    private Long createUserId;
+
+    /**
      * 备用字段1
      */
     private String backup1;

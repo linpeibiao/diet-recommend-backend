@@ -1,7 +1,10 @@
 package icu.xiaohu.diet_recommend.service;
 
+import icu.xiaohu.diet_recommend.model.dto.MenuDto;
 import icu.xiaohu.diet_recommend.model.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMenuService extends IService<Menu> {
 
+    /**
+     * 添加菜单
+     * @param menuDtos
+     * @return
+     */
+    boolean add(List<MenuDto> menuDtos);
 }

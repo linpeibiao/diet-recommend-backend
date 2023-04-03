@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +30,7 @@ public class Meal implements Serializable {
     /**
      * 主键id
      */
+    @JsonIgnore
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -67,13 +70,20 @@ public class Meal implements Serializable {
     private String url;
 
     /**
+     * 创建用户id
+     */
+    private Long createUserId;
+
+    /**
      * 备用字段1
      */
+    @JsonIgnore
     private String backup1;
 
     /**
      * 备用字段2
      */
+    @JsonIgnore
     private String backup2;
 
     /**
@@ -85,22 +95,26 @@ public class Meal implements Serializable {
      * 逻辑删除
      */
     @TableLogic
+    @JsonIgnore
     private Boolean isDeleted;
 
     /**
      * 创建时间
      */
+    @JsonIgnore
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @JsonIgnore
     private LocalDateTime updateTime;
 
     /**
      * 乐观锁
      */
     @Version
+    @JsonIgnore
     private Integer version;
 
 
