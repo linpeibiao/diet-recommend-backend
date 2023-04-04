@@ -1,14 +1,18 @@
 package icu.xiaohu.diet_recommend.service.impl;
+import java.time.LocalDateTime;
 
 import cn.hutool.Hutool;
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
+import icu.xiaohu.diet_recommend.mapper.MenuMealMapper;
 import icu.xiaohu.diet_recommend.model.dto.MenuDto;
-import icu.xiaohu.diet_recommend.model.entity.Meal;
-import icu.xiaohu.diet_recommend.model.entity.Menu;
+import icu.xiaohu.diet_recommend.model.entity.*;
 import icu.xiaohu.diet_recommend.mapper.MenuMapper;
-import icu.xiaohu.diet_recommend.model.entity.MenuMeal;
-import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.IMenuMealService;
 import icu.xiaohu.diet_recommend.service.IMenuService;
@@ -19,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,8 @@ import java.util.List;
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IMenuService {
 
+    @Resource
+    private MenuMealMapper menuMealMapper;
     @Autowired
     private IMenuMealService menuMealService;
 
@@ -92,5 +99,121 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             throw new BusinessException(ResultCode.PARAMS_ERROR, errMsg.toString());
         }
         return menuMealService.saveBatch(menuMeals);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean delete(List<Long> menuIds) {
+        // 非管理员只能删除自己创建的菜单
+        // 还要将关系删除
+        QueryWrapper<MenuMeal> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("menu_id", menuIds);
+        if (UserRole.ADMIN.getRoleName().equals(getUserRole())){
+            menuMealMapper.delete(queryWrapper);
+            // TODO 管理员删除用户的订单应该将信息推送给用户
+            return removeBatchByIds(menuIds);
+        }
+        // 判断菜单是否属于当前用户
+        User user = UserHolder.get();
+        for (Long menuId : menuIds) {
+            QueryWrapper<Menu> query = new QueryWrapper<>();
+            query.eq("menu_id", menuId);
+            Menu menu = this.getOne(query);
+            // 不是该用户增添，去除
+            if (!menu.getCreateUserId().equals(user.getId())){
+                menuIds.remove(menuId);
+            }
+        }
+        menuMealMapper.delete(queryWrapper);
+        return removeBatchByIds(menuIds);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean modify(Long menuId, MenuDto menuDto) {
+        UpdateWrapper<Menu> update = new UpdateWrapper<>();
+        String name = menuDto.getName();
+        String desc = menuDto.getDescription();
+        String tag = menuDto.getTag();
+        BigDecimal price = menuDto.getPrice();
+        String url = menuDto.getUrl();
+        List<Long> meals = menuDto.getMealIds();
+
+        // 拼接
+        if (!StringUtils.isBlank(name)){
+            update.set("name", name);
+        }
+        if (!StringUtils.isBlank(desc)){
+            update.set("description", desc);
+        }
+        if (!StringUtils.isBlank(tag)){
+            update.set("tag", tag);
+        }
+        if (price != null){
+            update.set("price", price);
+        }
+        if (!StringUtils.isBlank(url)){
+            update.set("url", url);
+        }
+        // 查询menuId是否存在
+        if (this.getById(menuId) == null){
+            throw new BusinessException(ResultCode.NOT_FOUND);
+        }
+        // 餐品更新比较麻烦
+        if (meals != null && !meals.isEmpty()){
+            // 删除原来的关系
+            menuMealMapper.delete(new QueryWrapper<MenuMeal>().in("meal_id", meals));
+            // 重新添加
+            List<MenuMeal> menuMeals = new ArrayList<>();
+            for (Long meal : meals) {
+                MenuMeal menuMeal = new MenuMeal();
+                menuMeal.setMenuId(menuId);
+                menuMeal.setMealId(meal);
+                menuMeals.add(menuMeal);
+            }
+            menuMealService.saveBatch(menuMeals);
+        }
+        return this.update(update);
+    }
+
+    @Override
+    public List<Menu> getMenusByUserId(Long userId) {
+        if (userId == null || userId < 1){
+            throw new BusinessException(ResultCode.PARAMS_ERROR);
+        }
+        // 查询
+        return list(new QueryWrapper<Menu>().eq("create_user_id", userId));
+    }
+
+    @Override
+    public IPage<Menu> getMenuPage(int pageNum, int pageSize) {
+        return this.page(new Page<>(pageNum, pageSize));
+    }
+
+    @Override
+    public IPage<Menu> listQuery(MenuDto menuDto, int pageNum, int pageSize) {
+        if (menuDto == null){
+            return this.page(new Page<>(pageNum, pageSize));
+        }
+        QueryWrapper<Menu> query = new QueryWrapper<>();
+        // 查询条件拼接
+        String type = menuDto.getTag();
+        String name = menuDto.getName();
+        if (!StringUtils.isBlank(name)){
+            query.like("name", "%"+ name +"%");
+        }
+        if (!StringUtils.isBlank(type)){
+            query.eq("type", type);
+        }
+
+        return this.page(new Page<Menu>(pageNum, pageSize), query);
+    }
+
+    /**
+     * 获取当前用户角色
+     * @return
+     */
+    private String getUserRole(){
+        return UserHolder.get().getRoleName().getRoleName();
     }
 }

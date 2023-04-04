@@ -77,7 +77,7 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
         // 非管理员就判断该餐品是否为用户增加
         for (Long mealId : mealIds){
             QueryWrapper<UserMeal> query = new QueryWrapper<>();
-            query.eq("mealId", mealId);
+            query.eq("meal_id", mealId);
             UserMeal userMeal = userMealService.getOne(query);
             // 不是该用户增添，去除
             if (!userMeal.getUserId().equals(user.getId())){

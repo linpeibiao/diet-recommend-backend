@@ -50,7 +50,7 @@ public class MenuDto {
     private Long nutritionId;
 
     /**
-     * 营养价值id
+     * id
      */
     @JsonIgnore
     private Long createUserId;

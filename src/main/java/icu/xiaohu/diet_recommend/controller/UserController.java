@@ -1,9 +1,12 @@
 package icu.xiaohu.diet_recommend.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import icu.xiaohu.diet_recommend.anotation.AuthCheck;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
+import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.result.Result;
 
@@ -122,5 +125,17 @@ public class UserController {
         }
         boolean isSuccess = userService.unBanUserByIds(userIdList);
         return Result.success(isSuccess);
+    }
+
+    @ApiOperation("分页获取所有用户")
+    @PostMapping("/page/{pageNum}/{pageSize}")
+    @AuthCheck(mustRole = UserRole.ADMIN)
+    public Result<IPage<Meal>> getNoteBasePageByUserId(@PathVariable("pageNum")int pageNum,
+                                                       @PathVariable("pageSize")int pageSize){
+        if (pageNum <= 0 || pageSize <= 0){
+            return Result.fail("分页参数错误, pageNum、pageSize 要大于0");
+        }
+        IPage<User> page = userService.page(new Page<User>(pageNum, pageSize));
+        return Result.success(page);
     }
 }

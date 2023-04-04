@@ -70,7 +70,7 @@ public class MealController {
 
     @ApiOperation("分页获取所有餐品")
     @PostMapping("/page/{pageNum}/{pageSize}")
-    public Result<IPage<Meal>> getNoteBasePageByUserId(@PathVariable("pageNum")int pageNum,
+    public Result<IPage<Meal>> getMealPageByUserId(@PathVariable("pageNum")int pageNum,
                                                            @PathVariable("pageSize")int pageSize){
         if (pageNum <= 0 || pageSize <= 0){
             return Result.fail("分页参数错误, pageNum、pageSize 要大于0");
