@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +40,7 @@ public class Material implements Serializable {
     private String name;
 
     /**
-     * 价格
+     * 参考价格
      */
     private BigDecimal price;
 
@@ -53,18 +55,20 @@ public class Material implements Serializable {
     private String description;
 
     /**
-     * 营养成分id
+     * 营养成分
      */
-    private Long nutritionId;
+    private String nutrition;
 
     /**
      * 备用字段1
      */
+    @JsonIgnore
     private String backup1;
 
     /**
      * 备用字段2
      */
+    @JsonIgnore
     private String backup2;
 
     /**
@@ -76,22 +80,26 @@ public class Material implements Serializable {
      * 逻辑删除
      */
     @TableLogic
+    @JsonIgnore
     private Boolean isDeleted;
 
     /**
      * 创建时间
      */
+    @JsonIgnore
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @JsonIgnore
     private LocalDateTime updateTime;
 
     /**
      * 乐观锁
      */
     @Version
+    @JsonIgnore
     private Integer version;
 
 

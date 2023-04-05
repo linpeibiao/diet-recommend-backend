@@ -1,7 +1,10 @@
 package icu.xiaohu.diet_recommend.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.model.entity.Nutrition;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface INutritionService extends IService<Nutrition> {
 
+    /**
+     * 查询营养成分
+     * @param nutrition
+     * @return
+     */
+    List<Nutrition> listByNutrition(String nutrition);
 }

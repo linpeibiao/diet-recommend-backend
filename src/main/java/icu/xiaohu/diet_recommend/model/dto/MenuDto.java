@@ -47,7 +47,7 @@ public class MenuDto {
     /**
      * 营养价值id
      */
-    private Long nutritionId;
+    private String nutrition;
 
     /**
      * id
