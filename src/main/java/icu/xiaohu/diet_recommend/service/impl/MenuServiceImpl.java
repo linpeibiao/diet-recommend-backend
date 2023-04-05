@@ -140,6 +140,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<Long> meals = menuDto.getMealIds();
 
         // 拼接
+        update.set("id", menuId);
         if (!StringUtils.isBlank(name)){
             update.set("name", name);
         }
@@ -197,13 +198,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         }
         QueryWrapper<Menu> query = new QueryWrapper<>();
         // 查询条件拼接
-        String type = menuDto.getTag();
+        String tag = menuDto.getTag();
         String name = menuDto.getName();
         if (!StringUtils.isBlank(name)){
             query.like("name", "%"+ name +"%");
         }
-        if (!StringUtils.isBlank(type)){
-            query.eq("type", type);
+        if (!StringUtils.isBlank(tag)){
+            query.eq("tag", tag);
         }
 
         return this.page(new Page<Menu>(pageNum, pageSize), query);
