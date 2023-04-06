@@ -97,7 +97,7 @@ public class MaterialServiceImpl extends ServiceImpl<MaterialMapper, Material> i
         if (this.getById(materialId) == null){
             throw new BusinessException(ResultCode.NOT_FOUND);
         }
-        update.set("id", materialId);
+        update.eq("id", materialId);
         return this.update(update);
     }
 

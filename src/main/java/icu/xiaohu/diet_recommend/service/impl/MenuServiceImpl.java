@@ -71,10 +71,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
                 errMsg.append("第" + (i + 1) + "名称为【" + name + "】的菜单数据不能为空\n");
                 isValidate = true;
             }
-            if (price == null){
-                errMsg.append("第" + (i + 1) + "名称为【" + name + "】的菜单价格不能为空\n");
-                isValidate = true;
-            }
+//            if (price == null){
+//                errMsg.append("第" + (i + 1) + "名称为【" + name + "】的菜单价格不能为空\n");
+//                isValidate = true;
+//            }
             if (mealIds == null || mealIds.isEmpty()){
                 errMsg.append("第" + (i + 1) + "名称为【" + name + "】的菜单要包含至少一个餐品\n");
                 isValidate = true;
@@ -140,7 +140,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<Long> meals = menuDto.getMealIds();
 
         // 拼接
-        update.set("id", menuId);
+        update.eq("id", menuId);
         if (!StringUtils.isBlank(name)){
             update.set("name", name);
         }
