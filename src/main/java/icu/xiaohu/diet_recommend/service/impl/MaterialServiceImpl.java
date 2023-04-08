@@ -9,8 +9,6 @@ import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.MaterialDto;
 import icu.xiaohu.diet_recommend.model.entity.Material;
 import icu.xiaohu.diet_recommend.mapper.MaterialMapper;
-import icu.xiaohu.diet_recommend.model.entity.Menu;
-import icu.xiaohu.diet_recommend.model.entity.MenuMeal;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.IMaterialService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

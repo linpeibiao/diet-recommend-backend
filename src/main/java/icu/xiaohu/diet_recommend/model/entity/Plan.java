@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
@@ -69,7 +70,7 @@ public class Plan implements Serializable {
      * 计划截止日期
      */
     @ApiModelProperty(value = "计划截止日期")
-    private LocalDateTime ddl;
+    private Date ddl;
 
     /**
      * 备用字段1
