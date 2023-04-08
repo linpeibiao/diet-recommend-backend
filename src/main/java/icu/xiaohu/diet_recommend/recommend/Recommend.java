@@ -1,6 +1,10 @@
 package icu.xiaohu.diet_recommend.recommend;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
+import icu.xiaohu.diet_recommend.model.entity.User;
+import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.recommend.core.ItemCF;
 import icu.xiaohu.diet_recommend.recommend.core.UserCF;
 import icu.xiaohu.diet_recommend.recommend.dto.ItemDTO;
@@ -8,7 +12,9 @@ import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
 import icu.xiaohu.diet_recommend.service.RecommendService;
+import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.UserHolder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +32,30 @@ public class Recommend {
     private RecommendService recommendService;
     @Autowired
     private IMealService mealService;
+    @Autowired
+    private UserService userService;
 
+
+    /**
+     * 冷启动
+     * @param userId
+     * @return
+     */
+    public List<Meal> coolRecommend(long userId){
+        // TODO 在缓存中随机获取热点餐品
+        User user = userService.getById(userId);
+        if (user == null) {
+            throw new BusinessException(ResultCode.NOT_FOUND, "无该用户对用数据");
+        }
+        String taste = user.getTasteHobby();
+        QueryWrapper<Meal> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByAsc("id").last("RAND()").last("limit 10");
+
+        if (!StringUtils.isBlank(taste)) {
+            queryWrapper.like("taste", taste);
+        }
+        return mealService.list(queryWrapper);
+    }
 
     /**
      * 方法描述: 猜你喜欢

@@ -24,4 +24,12 @@ public class MainApplicationTests {
     public void getRelateDtoTest(){
         System.out.println(userMealService.getUserMealRelate().size());
     }
+
+    @Test
+    public void randomTest(){
+        System.out.println(Math.random() * 10);
+        System.out.println(Math.random() * 10);
+        System.out.println(Math.random() * 10);
+        System.out.println(Math.random() * 10);
+    }
 }

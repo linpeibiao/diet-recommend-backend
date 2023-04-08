@@ -22,7 +22,7 @@ public class UserCF {
 
         //按用户分组
         // TODO 使用缓存
-        Map<Long, List<RelateDTO>>  userMap=list.stream().collect(Collectors.groupingBy(RelateDTO::getUserId));
+        Map<Long, List<RelateDTO>> userMap = list.stream().collect(Collectors.groupingBy(RelateDTO::getUserId));
         //获取其他用户与当前用户的关系值
         Map<Long,Double>  userDisMap = CoreMath.computeNeighbor(userId, userMap,0);
         //获取关系最近的用户
@@ -34,11 +34,15 @@ public class UserCF {
             return Collections.emptyList();
         }
         //最近邻用户看过饮食列表
-        List<Long>  neighborItems = userMap.get(nearestUserId).stream().map(RelateDTO::getMealId).collect(Collectors.toList());
-        //指定用户看过饮食列表
-        List<Long>  userItems  = userMap.get(userId).stream().map(RelateDTO::getMealId).collect(Collectors.toList());
-        //找到最近邻看过，但是该用户没看过的饮食
-        neighborItems.removeAll(userItems);
+        List<Long> neighborItems = userMap.get(nearestUserId).stream().map(RelateDTO::getMealId).collect(Collectors.toList());
+
+        if (userMap.get(userId) != null && !userMap.get(userId).isEmpty()){
+            //指定用户看过饮食列表
+            List<Long> userItems = userMap.get(userId).stream().map(RelateDTO::getMealId).collect(Collectors.toList());
+            //找到最近邻看过，但是该用户没看过的饮食
+            neighborItems.removeAll(userItems);
+        }
+
         return neighborItems;
     }
 

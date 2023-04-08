@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,13 @@ public class RecommendController {
     public Result<List<Meal>> recommendByUserCf(){
         User user = UserHolder.get();
         List<Meal> meals = recommend.userCfRecommend(user.getId());
-        return Result.success(meals);
+        // meals 为空 说明用户没有评分数据 或者说明是新用户
+        // 通过口味选择随机推荐
+        // 通过热门餐品推荐
+        if (meals == null || meals.isEmpty()){
+            meals = recommend.coolRecommend(user.getId());
+        }
+        return Result.success(random(meals));
     }
 
 
@@ -52,7 +59,21 @@ public class RecommendController {
         Long userId = UserHolder.get().getId();
         Long mealId = userMealService.getUserMostLike(userId).getId();
         List<Meal> meals = recommend.itemCfRecommend(mealId);
-        return Result.success(meals);
+        return Result.success(random(meals));
+    }
+
+    /**
+     * 避免重复推荐，随机推荐一定比例的数据
+     * @param meals
+     * @return
+     */
+    private List<Meal> random(List<Meal> meals){
+        List<Meal> res = new ArrayList<>();
+        // 返回三成的数据
+        for (int i = 0; i < meals.size() / 3; i++){
+            res.add(meals.get((int) (Math.random() * meals.size())));
+        }
+        return res;
     }
 
 }
