@@ -26,7 +26,7 @@ public class CodeGenerate {
                     builder.parent("icu.xiaohu.diet_recommend"); // 设置父包名
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("t_plan", "t_nutrition")// 设置需要生成的表名
+                    builder.addInclude("t_taste")// 设置需要生成的表名
                             .addTablePrefix("t_") // 设置过滤表前缀
                             .entityBuilder()
                             .enableLombok()

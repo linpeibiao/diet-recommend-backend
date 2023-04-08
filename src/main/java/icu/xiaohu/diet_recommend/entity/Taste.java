@@ -1,4 +1,4 @@
-package icu.xiaohu.diet_recommend.model.entity;
+package icu.xiaohu.diet_recommend.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,94 +7,75 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 口味
  * </p>
  *
  * @author xiaohu
- * @since 2023-03-29
+ * @since 2023-04-08
  */
 @Getter
 @Setter
-@TableName("t_user_meal")
-public class UserMeal implements Serializable {
+@TableName("t_taste")
+public class Taste implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键id
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 用户id
+     * 口味名称
      */
-    private Long userId;
+    private String taste;
 
     /**
-     * 餐品实体id
+     * 描述
      */
-    private Long mealId;
-
-    /**
-     * 评分
-     */
-    private Integer grade;
-
-    /**
-     * 标签
-     */
-    private String tag;
+    private String description;
 
     /**
      * 备用字段1
      */
-    @JsonIgnore
     private String backup1;
 
     /**
      * 备用字段2
      */
-    @JsonIgnore
     private String backup2;
 
     /**
      * 备注
      */
-    @JsonIgnore
     private String remark;
 
     /**
      * 逻辑删除
      */
-    @JsonIgnore
     @TableLogic
     private Boolean isDeleted;
 
     /**
      * 创建时间
      */
-    @JsonIgnore
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @JsonIgnore
     private LocalDateTime updateTime;
 
     /**
      * 乐观锁
      */
     @Version
-    @JsonIgnore
     private Integer version;
 
 

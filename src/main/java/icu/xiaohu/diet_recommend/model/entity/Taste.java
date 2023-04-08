@@ -14,44 +14,34 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ * 口味
  * </p>
  *
  * @author xiaohu
- * @since 2023-03-29
+ * @since 2023-04-08
  */
 @Getter
 @Setter
-@TableName("t_user_meal")
-public class UserMeal implements Serializable {
+@TableName("t_taste")
+public class Taste implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键id
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 用户id
+     * 口味名称
      */
-    private Long userId;
+    private String taste;
 
     /**
-     * 餐品实体id
+     * 描述
      */
-    private Long mealId;
-
-    /**
-     * 评分
-     */
-    private Integer grade;
-
-    /**
-     * 标签
-     */
-    private String tag;
+    private String description;
 
     /**
      * 备用字段1
@@ -74,8 +64,8 @@ public class UserMeal implements Serializable {
     /**
      * 逻辑删除
      */
-    @JsonIgnore
     @TableLogic
+    @JsonIgnore
     private Boolean isDeleted;
 
     /**

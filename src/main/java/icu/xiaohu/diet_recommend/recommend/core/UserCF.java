@@ -2,10 +2,7 @@ package icu.xiaohu.diet_recommend.recommend.core;
 
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UserCF {
@@ -22,7 +19,11 @@ public class UserCF {
 
         //按用户分组
         // TODO 使用缓存
-        Map<Long, List<RelateDTO>> userMap = list.stream().collect(Collectors.groupingBy(RelateDTO::getUserId));
+        Map<Long, List<RelateDTO>> userMap = list.stream()
+                .filter(Objects::nonNull) // 过滤掉null元素
+                .filter(dto -> dto.getUserId() != null) // 过滤掉userId为空的元素
+                .collect(Collectors.groupingBy(RelateDTO::getUserId));
+
         //获取其他用户与当前用户的关系值
         Map<Long,Double>  userDisMap = CoreMath.computeNeighbor(userId, userMap,0);
         //获取关系最近的用户

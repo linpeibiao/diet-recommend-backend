@@ -3,18 +3,18 @@ package icu.xiaohu.diet_recommend.controller.api;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.entity.User;
+import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.service.IUserMealService;
 import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author xiaohu
@@ -27,6 +27,18 @@ import javax.annotation.Resource;
 public class UserApi {
     @Resource
     private UserService userService;
+    @Resource
+    private IUserMealService userMealService;
+
+    @ApiOperation("用户餐品评分")
+    @PostMapping("/meal-grade/")
+    public Result<Boolean> mealGrade(@RequestBody List<UserMeal> userMeals){
+        if (userMeals == null || userMeals.isEmpty()) {
+            throw new BusinessException(ResultCode.PARAMS_ERROR, "参数为空");
+        }
+        boolean isSuccess = userMealService.add(userMeals);
+        return Result.success(isSuccess);
+    }
 
     @ApiOperation("获取用户个人信息")
     @PostMapping("/info/{userId}")

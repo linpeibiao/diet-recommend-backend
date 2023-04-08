@@ -41,7 +41,7 @@ public class NutritionController {
     }
 
     @ApiOperation("查询营养成分")
-    @PostMapping("list-by-nutrition/{pageNum}/{pageSize}")
+    @PostMapping("/list-by-nutrition")
     public Result<List<Nutrition>> getNutritionPageByNutrition(@RequestParam String nutrition){
         List<Nutrition> list = nutritionService.listByNutrition(nutrition);
         return Result.success(list);

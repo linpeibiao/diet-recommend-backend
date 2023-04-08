@@ -29,4 +29,10 @@ public interface IUserMealService extends IService<UserMeal> {
      */
     Meal getUserMostLike(Long userId);
 
+    /**
+     * 用户评分
+     * @param userMeals
+     * @return
+     */
+    boolean add(List<UserMeal> userMeals);
 }
