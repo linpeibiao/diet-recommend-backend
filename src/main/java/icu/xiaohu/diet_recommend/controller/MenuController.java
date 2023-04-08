@@ -8,6 +8,7 @@ import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.Menu;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.service.IMenuMealService;
 import icu.xiaohu.diet_recommend.service.IMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,9 @@ public class MenuController {
 
     @Autowired
     private IMenuService menuService;
+
+    @Autowired
+    private IMenuMealService menuMealService;
 
     @ApiOperation("添加菜单")
     @PostMapping("/add")
@@ -78,6 +82,16 @@ public class MenuController {
         }
         IPage<Menu> page = menuService.getMenuPage(pageNum, pageSize);
         return Result.success(page);
+    }
+
+    @ApiOperation("获取菜单餐品")
+    @PostMapping("/get-meals/{menuId}")
+    public Result<List<Meal>> getMenuMeals(@PathVariable Long menuId){
+        if (menuId == null){
+            throw new BusinessException(ResultCode.PARAMS_ERROR, "参数不能为空");
+        }
+        List<Meal> list = menuMealService.getMenuMeals(menuId);
+        return Result.success(list);
     }
 
     @ApiOperation("高级列表查询")
