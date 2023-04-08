@@ -42,11 +42,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     /**
      * 用户随机昵称前缀
      */
-    private static final String USER_NICKNAME_PREFIX = "note";
+    private static final String USER_NICKNAME_PREFIX = "diet";
     /**
      * 用户随机账号前缀
      */
-    private static final String USER_ACCOUNT_PREFIX = "notebook";
+    private static final String USER_ACCOUNT_PREFIX = "diet";
     /**
      * 密码加密盐值
      */
