@@ -30,7 +30,6 @@ public class Meal implements Serializable {
     /**
      * 主键id
      */
-    @JsonIgnore
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

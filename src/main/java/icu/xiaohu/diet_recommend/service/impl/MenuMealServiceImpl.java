@@ -29,7 +29,7 @@ public class MenuMealServiceImpl extends ServiceImpl<MenuMealMapper, MenuMeal> i
     @Override
     public List<Meal> getMenuMeals(Long menuId) {
         QueryWrapper<MenuMeal> query = new QueryWrapper<>();
-        query.eq("menu", menuId);
+        query.eq("menu_id", menuId);
         query.select("meal_id");
         List<MenuMeal> list = list(query);
         List<Long> mealIds = list.stream().map(MenuMeal::getMealId).collect(Collectors.toList());
