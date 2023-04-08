@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IPlanService extends IService<Plan> {
 
+    /**
+     * 用户添加计划
+     * @param plan
+     * @return
+     */
+    boolean add(Plan plan);
 }

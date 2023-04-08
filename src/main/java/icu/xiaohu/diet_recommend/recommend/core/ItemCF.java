@@ -22,15 +22,15 @@ public class ItemCF {
      * @date 2023年02月02日 14:51:42
      */
     public static List<Long> recommend(Long itemId, List<RelateDTO> list) {
-        //按物品分组
+        // 按物品分组
         Map<Long, List<RelateDTO>> itemMap = list.stream()
                 .filter(Objects::nonNull) // 过滤掉null元素
                 .filter(dto -> dto.getMealId() != null) // 过滤掉mealId为空的元素
                 .filter(dto -> dto.getUserId() != null) // 过滤掉userId为空的元素
                 .collect(Collectors.groupingBy(RelateDTO::getMealId));
-        //获取其他物品与当前物品的关系值
+        // 获取其他物品与当前物品的关系值
         Map<Long,Double> itemDisMap = CoreMath.computeNeighbor(itemId, itemMap,1);
-        //获取关系最近物品
+        // 获取关系最近物品
         double maxValue = Collections.max(itemDisMap.values());
         if (maxValue == 0.0D){
             return itemDisMap.entrySet()

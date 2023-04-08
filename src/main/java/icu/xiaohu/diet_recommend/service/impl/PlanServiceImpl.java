@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlanServiceImpl extends ServiceImpl<PlanMapper, Plan> implements IPlanService {
 
+    @Override
+    public boolean add(Plan plan) {
+        return false;
+    }
 }

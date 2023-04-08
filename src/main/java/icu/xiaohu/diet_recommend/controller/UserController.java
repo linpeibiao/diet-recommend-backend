@@ -136,6 +136,8 @@ public class UserController {
             return Result.fail("分页参数错误, pageNum、pageSize 要大于0");
         }
         IPage<User> page = userService.page(new Page<User>(pageNum, pageSize));
+        List<User> userList = page.getRecords();
+        userList.forEach(user -> user.setPassword(""));
         return Result.success(page);
     }
 }

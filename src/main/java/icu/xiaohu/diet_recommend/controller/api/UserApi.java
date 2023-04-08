@@ -2,10 +2,12 @@ package icu.xiaohu.diet_recommend.controller.api;
 
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
+import icu.xiaohu.diet_recommend.model.entity.Plan;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.service.IPlanService;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
 import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.UserHolder;
@@ -29,6 +31,18 @@ public class UserApi {
     private UserService userService;
     @Resource
     private IUserMealService userMealService;
+    @Resource
+    private IPlanService planService;
+
+    @ApiOperation("创建个人计划")
+    @PostMapping("/create-plan/")
+    public Result<Boolean> createPlan(@RequestBody Plan plan){
+        if (plan == null) {
+            throw new BusinessException(ResultCode.PARAMS_ERROR, "参数为空");
+        }
+        boolean isSuccess = planService.add(plan);
+        return Result.success(isSuccess);
+    }
 
     @ApiOperation("用户餐品评分")
     @PostMapping("/meal-grade/")
