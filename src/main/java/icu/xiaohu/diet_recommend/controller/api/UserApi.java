@@ -6,6 +6,7 @@ import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.UserService;
+import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import javax.annotation.Resource;
  * @date 2023/04/08/ 17:40
  * @description
  */
-@Api(tags = "用户信息服务")
+@Api(tags = "个人用户服务")
 @RestController
 @RequestMapping("/api/user")
 public class UserApi {
@@ -35,6 +36,13 @@ public class UserApi {
         }
         User user = userService.getById(userId);
         user.setPassword("");
+        return Result.success(user);
+    }
+
+    @ApiOperation("当前用户信息")
+    @PostMapping("/cur-info/")
+    public Result<User> getCurInfo(){
+        User user = UserHolder.get();
         return Result.success(user);
     }
 }
