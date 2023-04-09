@@ -25,6 +25,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -54,6 +55,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Override
+    public User curUser(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (StringUtils.isBlank(token)){
+            throw new BusinessException(ResultCode.NOT_LOGIN);
+        }
+        String tokenKey = LOGIN_USER_KEY + token;
+        // 先从 redis 中拿到登录信息，若数据为空，返回false
+        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(tokenKey);
+        // 判断 userMap
+        if (userMap.isEmpty()){
+            throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
+        }
+        // 将 map 转换成 User 实体,枚举值无法转换成整形，要忽略掉错误
+        return BeanUtil.fillBeanWithMap(userMap, new User(), true);
+    }
+
+    @Override
+    public void logout(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (!StringUtils.isBlank(token)) {
+            stringRedisTemplate.delete(LOGIN_USER_KEY + token);
+        }
+        UserHolder.remove();
+    }
 
     @Override
     public String login(LoginUser loginUser) {

@@ -5,6 +5,7 @@ import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.vo.LoginUser;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -13,6 +14,18 @@ import java.util.List;
 * @createDate 2022-11-09 14:46:36
 */
 public interface UserService extends IService<User> {
+
+    /**
+     * 当前登录用户
+     * @param request
+     * @return
+     */
+    User curUser(HttpServletRequest request);
+    /**
+     * 退出登录
+     * @param request
+     */
+    void logout(HttpServletRequest request);
 
     /**
      * 手机登录

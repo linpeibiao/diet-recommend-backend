@@ -17,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -75,8 +76,8 @@ public class UserApi {
 
     @ApiOperation("当前用户信息")
     @PostMapping("/cur-info/")
-    public Result<User> getCurInfo(){
-        User user = UserHolder.get();
+    public Result<User> getCurInfo(HttpServletRequest request){
+        User user = userService.curUser(request);
         return Result.success(user);
     }
 }

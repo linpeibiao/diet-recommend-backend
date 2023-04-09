@@ -73,6 +73,7 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
             Long userId = userMeal.getUserId();
             if (userId == null || userId < 0){
                 userId = user.getId();
+                userMeal.setUserId(userId);
             }
             // 餐品id
             Long mealId = userMeal.getMealId();

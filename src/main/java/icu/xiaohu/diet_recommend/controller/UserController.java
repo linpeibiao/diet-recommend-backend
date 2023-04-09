@@ -12,11 +12,13 @@ import icu.xiaohu.diet_recommend.model.result.Result;
 
 import icu.xiaohu.diet_recommend.model.vo.LoginUser;
 import icu.xiaohu.diet_recommend.service.UserService;
+import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -140,4 +142,15 @@ public class UserController {
         userList.forEach(user -> user.setPassword(""));
         return Result.success(page);
     }
+
+    @ApiOperation("用户退出登陆")
+    @PostMapping("/logout")
+    public Result<String> logout(HttpServletRequest request){
+
+        userService.logout(request);
+
+        return Result.success("退出登陆成功");
+    }
+
+
 }
