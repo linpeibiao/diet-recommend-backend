@@ -29,8 +29,8 @@ public class PictureController {
      */
     @ApiOperation("上传图片到服务器")
     @PostMapping(value = "/upload", consumes = "multipart/*", headers="content-type=multipart/form-data")
-    public Result<String> upload(@RequestParam(value = "multipartFile" ,required = true) MultipartFile multipartFile, @RequestParam(required = false) String bucketName, @RequestParam(required = false) String objectName){
-        String url = pictureService.uploadPictureToMinio(multipartFile, bucketName, objectName);
+    public Result<String> upload(@RequestParam(value = "file" ,required = true) MultipartFile file, @RequestParam(required = false) String bucketName, @RequestParam(required = false) String objectName){
+        String url = pictureService.uploadPictureToMinio(file, bucketName, objectName);
         return Result.success(url);
     }
 
