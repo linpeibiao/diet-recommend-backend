@@ -1,5 +1,6 @@
 package icu.xiaohu.diet_recommend.controller.api;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.entity.Plan;
@@ -42,6 +43,13 @@ public class UserApi {
         }
         boolean isSuccess = planService.add(plan);
         return Result.success(isSuccess);
+    }
+
+    @ApiOperation("查看个人计划")
+    @PostMapping("/query-plan/")
+    public Result<List<Plan>> queryPlan(){
+        List<Plan> plans = planService.list(new QueryWrapper<Plan>().eq("user_id", UserHolder.get().getId()));
+        return Result.success(plans);
     }
 
     @ApiOperation("用户餐品评分")
