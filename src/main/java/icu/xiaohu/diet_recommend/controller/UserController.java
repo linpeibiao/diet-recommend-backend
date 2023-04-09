@@ -65,8 +65,8 @@ public class UserController {
      */
     @ApiOperation("用户更新信息")
     @PutMapping("/update")
-    public Result<String> update(@RequestBody UserDto userDto){
-        boolean isSuccess = userService.updateInfo(userDto);
+    public Result<String> update(@RequestBody UserDto userDto, HttpServletRequest request){
+        boolean isSuccess = userService.updateInfo(userDto, request);
         return isSuccess ? Result.success("修改成功") : Result.fail("");
     }
 

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * @date 2023/04/09/ 21:06
  * @description
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class ThreadLocalCleaner {
 
-    @ModelAttribute
+//    @ModelAttribute
     public void cleanUser() {
         UserHolder.remove();
     }

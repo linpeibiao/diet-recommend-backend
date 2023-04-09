@@ -133,24 +133,54 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public boolean updateInfo(UserDto userDto) {
+    public boolean updateInfo(UserDto userDto, HttpServletRequest request) {
         // 判空
         if (userDto == null){
-            throw new BusinessException(ResultCode.PARAMS_ERROR);
+            throw new BusinessException(ResultCode.PARAMS_ERROR, "参数不能为空");
         }
-        String phone = userDto.getPhone();
-        if (StringUtils.isEmpty(phone)){
-            throw new BusinessException(ResultCode.PARAMS_ERROR, "手机号不存在");
-        }
-        // 判断账号是否唯一
+        UpdateWrapper<User> update = new UpdateWrapper<>();
+        String nackName = userDto.getNackname();
+        String tasteHobby = userDto.getTasteHobby();
         String account = userDto.getAccount();
+        String avatar = userDto.getAvatar();
+        Integer gender = userDto.getGender();
+        String email = userDto.getEmail();
+        String realName = userDto.getRealName();
+        if (!StringUtils.isBlank(nackName)){
+            update.set("nackname", nackName);
+        }
+        if (!StringUtils.isBlank(tasteHobby)){
+            update.set("taste_hobby", tasteHobby);
+        }
+        if (!StringUtils.isBlank(avatar)){
+            update.set("avatar", avatar);
+        }
+        if (gender == 1 || gender == 0){
+            update.set("gender", gender);
+        }
+        if (!StringUtils.isBlank(email)){
+            update.set("email", email);
+        }
+        if (!StringUtils.isBlank(realName)){
+            update.set("real_name", realName);
+        }
+
+        // 判断账号是否唯一
         if (accountIsExist(account)){
             throw new BusinessException(ResultCode.FAIL,"账号已经存在");
+        }else{
+            update.set("real_name", account);
         }
-        // 将dto转换成user对象
-        User user = BeanUtil.copyProperties(userDto, User.class);
+        Long userId = UserHolder.get().getId();
+        update.eq("id", userId);
         // 保存更新
-        return update(user, new QueryWrapper<User>().eq("phone", userDto.getPhone()));
+        boolean isSuccess = update(update);
+        if (isSuccess){
+            User user = this.getById(userId);
+            // 更新用户缓存信息
+            saveUserInfoToRedis(user, request.getHeader("token"));
+        }
+        return update(update);
     }
 
     @Override
@@ -278,6 +308,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 6生成token令牌，将用户信息和token一并保存在redis, 并设置有效期。
         String token = JwtHelper.createToken(user.getId(), keyword);
         // 6.1将User转换成Map
+        saveUserInfoToRedis(user, token);
+        // 返回token
+        return token;
+    }
+
+    private void saveUserInfoToRedis(User user, String token){
         UserDto userDto = BeanUtil.copyProperties(user, UserDto.class);
         /**
          * 注意空指针异常
@@ -301,8 +337,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
         // 6.3设置有效期
         stringRedisTemplate.expire(tokenKey, LOGIN_USER_TTL, TimeUnit.MINUTES);
-        // 返回token
-        return token;
     }
 
     /**
