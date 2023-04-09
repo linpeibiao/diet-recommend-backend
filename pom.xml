@@ -76,6 +76,12 @@
             <artifactId>redisson</artifactId>
             <version>3.17.6</version>
         </dependency>
+        <!-- 文件存储 -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>7.1.0</version>
+        </dependency>
         <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
