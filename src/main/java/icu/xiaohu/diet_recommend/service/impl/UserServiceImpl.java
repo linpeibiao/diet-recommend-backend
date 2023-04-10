@@ -171,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }else{
             update.set("real_name", account);
         }
-        Long userId = UserHolder.get().getId();
+        Long userId = curUser(request).getId();
         update.eq("id", userId);
         // 保存更新
         boolean isSuccess = update(update);
@@ -180,7 +180,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             // 更新用户缓存信息
             saveUserInfoToRedis(user, request.getHeader("token"));
         }
-        return update(update);
+        return isSuccess;
     }
 
     @Override

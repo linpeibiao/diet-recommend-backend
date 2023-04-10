@@ -11,7 +11,6 @@ import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.IPlanService;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
 import icu.xiaohu.diet_recommend.service.UserService;
-import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
