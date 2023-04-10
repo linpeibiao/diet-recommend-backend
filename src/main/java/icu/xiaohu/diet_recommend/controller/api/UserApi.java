@@ -48,8 +48,8 @@ public class UserApi {
 
     @ApiOperation("查看个人计划")
     @PostMapping("/query-plan/")
-    public Result<List<Plan>> queryPlan(){
-        List<Plan> plans = planService.list(new QueryWrapper<Plan>().eq("user_id", UserHolder.get().getId()));
+    public Result<List<Plan>> queryPlan(HttpServletRequest request){
+        List<Plan> plans = planService.list(new QueryWrapper<Plan>().eq("user_id", userService.curUser(request).getId()));
         return Result.success(plans);
     }
 
