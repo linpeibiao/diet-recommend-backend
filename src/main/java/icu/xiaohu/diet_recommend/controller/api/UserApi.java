@@ -1,15 +1,18 @@
 package icu.xiaohu.diet_recommend.controller.api;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.entity.Plan;
 import icu.xiaohu.diet_recommend.model.entity.User;
+import icu.xiaohu.diet_recommend.model.entity.UserBodyInfo;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.IPlanService;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
+import icu.xiaohu.diet_recommend.service.UserBodyInfoService;
 import icu.xiaohu.diet_recommend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +37,8 @@ public class UserApi {
     private IUserMealService userMealService;
     @Resource
     private IPlanService planService;
+    @Resource
+    private UserBodyInfoService userBodyInfoService;
 
     @ApiOperation("创建个人计划")
     @PostMapping("/create-plan/")
@@ -79,4 +84,29 @@ public class UserApi {
         User user = userService.curUser(request);
         return Result.success(user);
     }
+
+    @ApiOperation("获取当前用户身体信息")
+    @PostMapping("/cur-body-info/")
+    public Result<UserBodyInfo> getCurBodyInfo(HttpServletRequest request){
+        User user = userService.curUser(request);
+        UserBodyInfo userBodyInfo = userBodyInfoService.getOne(new QueryWrapper<UserBodyInfo>().eq("user_id", user.getId()));
+        return Result.success(userBodyInfo);
+    }
+
+    @ApiOperation("编辑当前用户身体信息")
+    @PostMapping("/set-cur-body-info/")
+    public Result<UserBodyInfo> setCurBodyInfo(HttpServletRequest request, @RequestBody UserBodyInfo userBodyInfo){
+        User user = userService.curUser(request);
+        UserBodyInfo temp = userBodyInfoService.getOne(new QueryWrapper<UserBodyInfo>().eq("user_id", user.getId()));
+        if (temp != null){
+            userBodyInfoService.update(userBodyInfo, new UpdateWrapper<UserBodyInfo>().eq("user_id", user.getId()));
+        }else{
+            userBodyInfoService.save(userBodyInfo);
+        }
+
+        return Result.success(userBodyInfoService.getOne(new QueryWrapper<UserBodyInfo>().eq("user_id", user.getId())));
+
+    }
+
+
 }
