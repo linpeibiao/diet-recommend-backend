@@ -101,6 +101,7 @@ public class UserApi {
         if (temp != null){
             userBodyInfoService.update(userBodyInfo, new UpdateWrapper<UserBodyInfo>().eq("user_id", user.getId()));
         }else{
+            userBodyInfo.setUserId(user.getId());
             userBodyInfoService.save(userBodyInfo);
         }
 

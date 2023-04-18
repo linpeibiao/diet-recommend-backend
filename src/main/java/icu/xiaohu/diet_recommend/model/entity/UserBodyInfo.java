@@ -24,6 +24,7 @@ public class UserBodyInfo implements Serializable {
     /**
      * 用户id
      */
+    @JsonIgnore
     private Long userId;
 
     /**

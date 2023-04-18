@@ -1,7 +1,7 @@
 package icu.xiaohu.diet_recommend.mapper;
 
-import icu.xiaohu.diet_recommend.entity.Taste;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import icu.xiaohu.diet_recommend.model.entity.Taste;
 
 /**
  * <p>

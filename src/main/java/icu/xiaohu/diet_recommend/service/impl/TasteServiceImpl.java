@@ -1,7 +1,7 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
-import icu.xiaohu.diet_recommend.entity.Taste;
 import icu.xiaohu.diet_recommend.mapper.TasteMapper;
+import icu.xiaohu.diet_recommend.model.entity.Taste;
 import icu.xiaohu.diet_recommend.service.ITasteService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

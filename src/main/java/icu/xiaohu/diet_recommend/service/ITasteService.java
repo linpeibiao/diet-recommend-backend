@@ -1,7 +1,7 @@
 package icu.xiaohu.diet_recommend.service;
 
-import icu.xiaohu.diet_recommend.entity.Taste;
 import com.baomidou.mybatisplus.extension.service.IService;
+import icu.xiaohu.diet_recommend.model.entity.Taste;
 
 /**
  * <p>
