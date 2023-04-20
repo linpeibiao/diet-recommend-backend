@@ -24,4 +24,13 @@ public class RedisConstant {
      */
     public static final long LOGIN_USER_TTL = 24L * 60L;
 
+    /**
+     * 饮食评分数据缓存 key
+     */
+    public static final String DIET_GRADE_KEY = "diet:grade:";
+    /**
+     * 饮食评分数据缓存 有效时间
+     */
+    public static final long DIET_GRADE_TTL = 24L * 60L;
+
 }
