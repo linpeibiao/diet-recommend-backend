@@ -74,6 +74,9 @@ public class UserApi {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "参数不合法");
         }
         User user = userService.getById(userId);
+        if (user == null){
+            throw new BusinessException(ResultCode.NULL_ERROR, "无该用户信息");
+        }
         user.setPassword("");
         return Result.success(user);
     }
