@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import icu.xiaohu.diet_recommend.anotation.SaveLog;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.MaterialDto;
 import icu.xiaohu.diet_recommend.model.entity.Material;
@@ -100,6 +101,7 @@ public class MaterialServiceImpl extends ServiceImpl<MaterialMapper, Material> i
     }
 
     @Override
+    @SaveLog
     public IPage<Material> getMaterialPage(int pageNum, int pageSize) {
         return this.page(new Page<>(pageNum, pageSize));
     }
