@@ -61,7 +61,7 @@ public class LogAspect {
         Object[] args = joinPoint.getArgs();
         String params = Arrays.toString(args);
         // 访问用户
-        Long userId = UserHolder.get().getId();
+        Long userId = UserHolder.get() == null ? -1L : UserHolder.get().getId();
         // 保存访问日志至数据库
         Log log = new Log();
         log.setUserId(userId);
@@ -89,7 +89,7 @@ public class LogAspect {
         String packageName = signature.getDeclaringType().getPackage().getName();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         // 访问用户
-        Long userId = UserHolder.get().getId();
+        Long userId = UserHolder.get() == null ? -1L : UserHolder.get().getId();
         String errorMsg = e.getMessage();
         String logMsg = String.format("[%s] %s.%s(%s) failed: %s", time, className, methodName, params, errorMsg);
         logger.error(logMsg, e);
