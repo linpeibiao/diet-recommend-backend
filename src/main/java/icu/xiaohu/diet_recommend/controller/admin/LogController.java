@@ -9,6 +9,7 @@ import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.LogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,8 +33,8 @@ public class LogController {
     @PostMapping("/list-query")
     @AuthCheck(mustRole = UserRole.ADMIN)
     public Result<List<Log>> listQuery(@RequestBody Log log,
-                                       @RequestParam(required = false) Date startTime,
-                                       @RequestParam(required = false) Date endTime){
+                                       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+                                       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime){
         List<Log> list = logService.listQuery(log, startTime, endTime);
         return Result.success(list);
     }

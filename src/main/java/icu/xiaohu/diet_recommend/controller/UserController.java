@@ -132,7 +132,7 @@ public class UserController {
     @ApiOperation("分页获取所有用户")
     @PostMapping("/page/{pageNum}/{pageSize}")
     @AuthCheck(mustRole = UserRole.ADMIN)
-    public Result<IPage<Meal>> getNoteBasePageByUserId(@PathVariable("pageNum")int pageNum,
+    public Result<IPage<User>> getUserPage(@PathVariable("pageNum")int pageNum,
                                                        @PathVariable("pageSize")int pageSize){
         if (pageNum <= 0 || pageSize <= 0){
             return Result.fail("分页参数错误, pageNum、pageSize 要大于0");

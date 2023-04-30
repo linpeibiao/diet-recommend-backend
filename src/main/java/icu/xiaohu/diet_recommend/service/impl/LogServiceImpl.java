@@ -6,6 +6,7 @@ import icu.xiaohu.diet_recommend.model.entity.Log;
 import icu.xiaohu.diet_recommend.service.LogService;
 import icu.xiaohu.diet_recommend.mapper.LogMapper;
 import jodd.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -33,6 +34,10 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
         // 包名
         String packageName = log.getPackageName();
         // 请求状态
+        String status = log.getStatus();
+        if (!StringUtils.isBlank(status)){
+            query.eq("status", status);
+        }
         // 访问时间区间
         // 都不为空
         if (startTime != null && endTime != null){
@@ -56,6 +61,8 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
         if (!StringUtil.isBlank(packageName)){
             query.like("package_name", "%" + packageName + "%");
         }
+
+        query.orderByDesc("request_time");
 
         return list(query);
     }
