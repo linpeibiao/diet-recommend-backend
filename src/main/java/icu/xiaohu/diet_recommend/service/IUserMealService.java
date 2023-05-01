@@ -35,4 +35,18 @@ public interface IUserMealService extends IService<UserMeal> {
      * @return
      */
     boolean add(List<UserMeal> userMeals);
+
+    /**
+     * 获取饮食排行榜
+     * @param top
+     * @return
+     */
+    List<Meal> getTopMeal(Integer top);
+
+    /**
+     * 点击某推荐饮食，点击量自增
+     * @param mealId
+     * @return
+     */
+    boolean clickMeal(Long mealId);
 }

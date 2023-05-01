@@ -33,4 +33,9 @@ public class RedisConstant {
      */
     public static final long DIET_GRADE_TTL = 24L * 60L;
 
+    /**
+     * 排行榜 zSet KEY
+     */
+    public static final String DIET_MEAL_TOP = "diet:meal:top:";
+
 }
