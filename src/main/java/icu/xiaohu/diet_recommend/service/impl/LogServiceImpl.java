@@ -1,8 +1,11 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import icu.xiaohu.diet_recommend.model.entity.Log;
+import icu.xiaohu.diet_recommend.model.entity.Material;
 import icu.xiaohu.diet_recommend.service.LogService;
 import icu.xiaohu.diet_recommend.mapper.LogMapper;
 import jodd.util.StringUtil;
@@ -22,7 +25,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
     implements LogService{
 
     @Override
-    public List<Log> listQuery(Log log, Date startTime, Date endTime) {
+    public IPage<Log> listQuery(Log log, Date startTime, Date endTime, int pageNum, int pageSize) {
 
         QueryWrapper<Log> query = new QueryWrapper<>();
         // 用户
@@ -64,7 +67,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log>
 
         query.orderByDesc("request_time");
 
-        return list(query);
+        return this.page(new Page<Log>(pageNum, pageSize), query);
     }
 }
 

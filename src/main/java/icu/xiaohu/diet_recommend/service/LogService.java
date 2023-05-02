@@ -1,5 +1,6 @@
 package icu.xiaohu.diet_recommend.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.model.entity.Log;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,7 +19,9 @@ public interface LogService extends IService<Log> {
      * @param log
      * @param startTime
      * @param endTime
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    List<Log> listQuery(Log log, Date startTime, Date endTime);
+    IPage<Log> listQuery(Log log, Date startTime, Date endTime, int pageNum, int pageSize);
 }

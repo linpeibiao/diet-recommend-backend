@@ -1,5 +1,6 @@
 package icu.xiaohu.diet_recommend.controller.admin;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.anotation.AuthCheck;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
@@ -30,13 +31,18 @@ public class LogController {
 
 
     @ApiOperation("日志高级查询")
-    @PostMapping("/list-query")
+    @PostMapping("/list-query/{pageNum}/{pageSize}")
     @AuthCheck(mustRole = UserRole.ADMIN)
-    public Result<List<Log>> listQuery(@RequestBody Log log,
+    public Result<IPage<Log>> listQuery(@RequestBody Log log,
                                        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
-                                       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime){
-        List<Log> list = logService.listQuery(log, startTime, endTime);
-        return Result.success(list);
+                                       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime,
+                                       @PathVariable("pageNum")int pageNum,
+                                       @PathVariable("pageSize")int pageSize){
+        if (pageNum <= 0 || pageSize <= 0){
+            return Result.fail("分页参数错误, pageNum、pageSize 要大于0");
+        }
+        IPage<Log> page = logService.listQuery(log, startTime, endTime, pageNum, pageSize);
+        return Result.success(page);
     }
 
     @ApiOperation("删除日志（可批量）")
