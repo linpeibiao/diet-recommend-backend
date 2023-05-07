@@ -73,7 +73,7 @@ public class RecommendController {
         for (int i = 0; i < meals.size() / 3; i++){
             res.add(meals.get((int) (Math.random() * meals.size())));
         }
-        return res;
+        return res.isEmpty() ? meals : res;
     }
 
 }

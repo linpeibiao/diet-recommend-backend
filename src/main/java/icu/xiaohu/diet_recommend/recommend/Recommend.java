@@ -11,10 +11,7 @@ import icu.xiaohu.diet_recommend.recommend.core.ItemCF;
 import icu.xiaohu.diet_recommend.recommend.core.UserCF;
 import icu.xiaohu.diet_recommend.recommend.dto.ItemDTO;
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
-import icu.xiaohu.diet_recommend.service.IMealService;
-import icu.xiaohu.diet_recommend.service.RecommendService;
-import icu.xiaohu.diet_recommend.service.RedisService;
-import icu.xiaohu.diet_recommend.service.UserService;
+import icu.xiaohu.diet_recommend.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -38,9 +35,9 @@ public class Recommend {
     @Autowired
     private UserService userService;
     @Resource
-    private RedisService redisService;
-    @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private IUserMealService userMealService;
 
 
     /**
@@ -52,7 +49,7 @@ public class Recommend {
         // TODO 在缓存中随机获取热点餐品
         User user = userService.getById(userId);
         if (user == null) {
-            throw new BusinessException(ResultCode.NOT_FOUND, "无该用户对用数据");
+            throw new BusinessException(ResultCode.NOT_FOUND, "无该用户对应数据");
         }
         String taste = user.getTasteHobby();
         QueryWrapper<Meal> queryWrapper = new QueryWrapper<>();
@@ -60,6 +57,8 @@ public class Recommend {
 
         if (!StringUtils.isBlank(taste)) {
             queryWrapper.like("taste", taste);
+        }else{
+            return userMealService.getTopMeal(3);
         }
         return mealService.list(queryWrapper);
     }
@@ -90,7 +89,8 @@ public class Recommend {
         List<RelateDTO> data = getRelateDto();
         List<Long> recommendations = ItemCF.recommend(mealId, data);
         // 需缓存餐品数据
-        return mealService.list().stream().filter(meal -> recommendations.contains(meal.getId())).collect(Collectors.toList());
+        return mealService.listByIds(recommendations);
+//        return mealService.list().stream().filter(meal -> recommendations.contains(meal.getId())).collect(Collectors.toList());
     }
 
     private List<RelateDTO> getRelateDto(){
