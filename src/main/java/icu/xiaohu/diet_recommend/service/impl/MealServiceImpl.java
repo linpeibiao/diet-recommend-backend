@@ -13,11 +13,13 @@ import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
+import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.UserHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -32,14 +34,16 @@ import java.util.List;
 public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IMealService {
     @Autowired
     private IUserMealService userMealService;
+    @Autowired
+    private UserService userService;
 
     @Override
-    public boolean add(List<Meal> meals) {
+    public boolean add(List<Meal> meals, HttpServletRequest request) {
         // 错误提示消息
         StringBuilder errMsg = new StringBuilder();
         // 参数是否合法标识
         boolean isValidate = false;
-        User user = UserHolder.get();
+        User user = userService.curUser(request);
         // 参数判断
         for (int i = 0; i < meals.size(); i ++){
             Meal meal = meals.get(i);

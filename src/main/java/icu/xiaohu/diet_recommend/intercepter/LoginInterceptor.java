@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,13 @@ import static icu.xiaohu.diet_recommend.constant.RedisConstant.LOGIN_USER_KEY;
 public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private UserService userService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if ("OPTIONS".equals(request.getMethod())) {
             return true;
         }
-
 
         log.info("登录拦截器被执行");
         String url = request.getRequestURI();
@@ -47,24 +49,18 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
         }
         // 1.判断是否需要拦截（ThreadLocal中是否有用户）
-        if (UserHolder.get() == null) {
-            log.info("不存在登录用户");
-            String tokenKey = LOGIN_USER_KEY + token;
-            // 先从 redis 中拿到登录信息，若数据为空，返回false
-            Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(tokenKey);
-            // 判断 userMap
-            if (userMap.isEmpty()){
-                throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
-            }
-            // 将 map 转换成 User 实体,枚举值无法转换成整形，要忽略掉错误
-            User user = BeanUtil.fillBeanWithMap(userMap, new User(), true);
-            log.info(user.toString());
-            // 将 USer 保存在 UserHolder
-            UserHolder.save(user);
-            return true;
+        String tokenKey = LOGIN_USER_KEY + token;
+        // 先从 redis 中拿到登录信息，若数据为空，返回false
+        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(tokenKey);
+        // 判断 userMap
+        if (userMap.isEmpty()){
+            throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
         }
-        // 有用户，则放行
-        log.info("存在登录用户");
+        // 将 map 转换成 User 实体,枚举值无法转换成整形，要忽略掉错误
+//        User user = BeanUtil.fillBeanWithMap(userMap, new User(), true);
+//        log.info(user.toString());
+//        // 将 USer 保存在 UserHolder
+//        UserHolder.save(user);
         return true;
     }
 

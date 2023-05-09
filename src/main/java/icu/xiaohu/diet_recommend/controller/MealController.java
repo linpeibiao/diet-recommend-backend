@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,11 +32,11 @@ public class MealController {
 
     @ApiOperation("添加餐品数据")
     @PostMapping("/add")
-    public Result<Boolean> add(@RequestBody List<Meal> meals){
+    public Result<Boolean> add(@RequestBody List<Meal> meals, HttpServletRequest request){
         if (meals == null || meals.isEmpty()){
             throw new BusinessException(ResultCode.PARAMS_ERROR, "参数不能为空");
         }
-        boolean isSuccess = mealService.add(meals);
+        boolean isSuccess = mealService.add(meals,request);
         return Result.success(isSuccess);
     }
 

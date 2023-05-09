@@ -60,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User curUser(HttpServletRequest request) {
         String token = request.getHeader("token");
         if (StringUtils.isBlank(token)){
-            throw new BusinessException(ResultCode.NOT_LOGIN);
+            throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
         }
         String tokenKey = LOGIN_USER_KEY + token;
         // 先从 redis 中拿到登录信息，若数据为空，返回false

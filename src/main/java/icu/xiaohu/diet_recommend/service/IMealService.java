@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -19,9 +20,10 @@ public interface IMealService extends IService<Meal> {
     /**
      * 批量添加餐品数据
      * @param meals
+     * @param request
      * @return
      */
-    boolean add(List<Meal> meals);
+    boolean add(List<Meal> meals, HttpServletRequest request);
 
     /**
      *
