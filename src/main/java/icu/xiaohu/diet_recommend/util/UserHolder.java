@@ -1,7 +1,11 @@
 package icu.xiaohu.diet_recommend.util;
 
 import icu.xiaohu.diet_recommend.model.entity.User;
+import icu.xiaohu.diet_recommend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author xiaohu
