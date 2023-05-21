@@ -197,9 +197,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 判断当前用户 判断用户是否存在
         User curUser = UserHolder.get();
         if (curUser == null || !account.equals(curUser.getAccount())){
-            throw new BusinessException(ResultCode.NO_AUTH);
+            throw new BusinessException(ResultCode.NO_AUTH, "当前用户不匹配");
         }
-        // TODO 判断密码长度
         // 密码加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
         // 保存密码
@@ -218,7 +217,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (StringUtils.isAnyEmpty(account, password)){
             throw new BusinessException(ResultCode.PARAMS_ERROR);
         }
-        // TODO 应该先判断是否已经登录
 
         // 3. 查询账户
         User user = getOne(new QueryWrapper<User>().eq("account", account));

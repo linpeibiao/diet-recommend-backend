@@ -61,7 +61,6 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
         UserMeal userMeal = this.getOne(query);
         Meal meal = null;
         if (userMeal == null){
-            // TODO 返回热门餐品
             meal = recommend.coolRecommend(UserHolder.get().getId()).get(0);
         }else{
             meal = mealService.getById(userMeal.getMealId());

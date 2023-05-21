@@ -18,7 +18,6 @@ public class UserCF {
     public static List<Long> recommend(Long userId, List<RelateDTO> list) {
 
         //按用户分组
-        // TODO 使用缓存
         Map<Long, List<RelateDTO>> userMap = list.stream()
                 .filter(Objects::nonNull) // 过滤掉null元素
                 .filter(dto -> dto.getUserId() != null) // 过滤掉userId为空的元素

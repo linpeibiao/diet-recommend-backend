@@ -46,7 +46,6 @@ public class Recommend {
      * @return
      */
     public List<Meal> coolRecommend(long userId){
-        // TODO 在缓存中随机获取热点餐品
         User user = userService.getById(userId);
         if (user == null) {
             throw new BusinessException(ResultCode.NOT_FOUND, "无该用户对应数据");
