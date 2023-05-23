@@ -69,6 +69,12 @@ public class Meal implements Serializable {
     private String url;
 
     /**
+     * 状态 0-正常
+     * 1-禁用
+     */
+    private Integer status;
+
+    /**
      * 创建用户id
      */
     private Long createUserId;
