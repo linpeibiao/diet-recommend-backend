@@ -39,6 +39,9 @@ public class SearchFacade {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "请求体不能为空");
         }
         String searchText = searchRequest.getSearchText();
+        if (StringUtils.isBlank(searchText)){
+            return null;
+        }
         int current = searchRequest.getCurrent();
         int pageSize = searchRequest.getPageSize();
         String type = searchRequest.getType();
