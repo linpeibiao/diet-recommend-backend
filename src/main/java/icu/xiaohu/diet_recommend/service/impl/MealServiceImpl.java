@@ -10,6 +10,7 @@ import icu.xiaohu.diet_recommend.mapper.MealMapper;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.server.WebSocketServer;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
@@ -68,7 +69,10 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
             throw new BusinessException(ResultCode.PARAMS_ERROR, errMsg.toString());
         }
 
-        return this.saveBatch(meals);
+        boolean save = this.saveBatch(meals);
+        // 发起管理员审核
+        WebSocketServer.sendCheck("用户新建餐品信息,需审核", user.getId());
+        return save;
     }
 
     @Override

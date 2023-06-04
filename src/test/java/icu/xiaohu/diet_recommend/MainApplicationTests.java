@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  */
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 public class MainApplicationTests {
     @Resource
     private IUserMealService userMealService;
