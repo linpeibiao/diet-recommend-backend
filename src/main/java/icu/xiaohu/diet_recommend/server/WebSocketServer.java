@@ -62,6 +62,10 @@ public class WebSocketServer {
      **/
     public static void sendCheck(String message, Long byUserId) {
         log.info("用户"+ byUserId +"发起审核推送");
+        // 管理员是否在线
+        if (adminWebSocketMap.isEmpty()) {
+
+        }
         // 直接遍历管理员会话
         for (Map.Entry<String, WebSocketServer> admin : adminWebSocketMap.entrySet()) {
             admin.getValue().sendMessage(message);
