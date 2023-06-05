@@ -60,8 +60,8 @@ public class WebSocketServer {
     /**
      * 发起审核
      **/
-    public static void sendCheck(String message, Long userId) {
-        log.info("用户"+ userId +"发起审核推送");
+    public static void sendCheck(String message, Long byUserId) {
+        log.info("用户"+ byUserId +"发起审核推送");
         // 直接遍历管理员会话
         for (Map.Entry<String, WebSocketServer> admin : adminWebSocketMap.entrySet()) {
             admin.getValue().sendMessage(message);

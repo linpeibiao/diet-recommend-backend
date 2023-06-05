@@ -63,6 +63,8 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
                 isValidate = true;
             }
             meal.setCreateUserId(user.getId());
+            // 审核前状态为禁用
+            meal.setStatus(1);
         }
 
         if (isValidate){
@@ -121,7 +123,7 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
             throw new BusinessException(ResultCode.PARAMS_ERROR);
         }
         // 查询
-        return list(new QueryWrapper<Meal>().eq("create_user_id", userId));
+        return list(new QueryWrapper<Meal>().eq("create_user_id", userId).eq("status", 0));
     }
 
     @Override
@@ -149,6 +151,8 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
         if (!StringUtils.isBlank(type)){
             query.eq("type", type);
         }
+        // 状态
+        query.eq("status", 0);
 
         return this.page(new Page<Meal>(pageNum, pageSize), query);
     }
