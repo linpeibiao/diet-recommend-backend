@@ -39,7 +39,17 @@ public class Message implements Serializable {
     /**
      * 创建用户
      */
-    private Long createUser;
+    private Long producer;
+
+    /**
+     * 消费用户
+     */
+    private Long consumer;
+
+    /**
+     * 状态
+     */
+    private Integer status;
 
     /**
      * 备用字段1

@@ -9,7 +9,9 @@
             <result property="brief" column="brief" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="type" column="type" jdbcType="VARCHAR"/>
-            <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+            <result property="producer" column="producer" jdbcType="BIGINT"/>
+            <result property="consumer" column="consumer" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="backup1" column="backup1" jdbcType="VARCHAR"/>
             <result property="backup2" column="backup2" jdbcType="VARCHAR"/>
             <result property="remark" column="remark" jdbcType="VARCHAR"/>
@@ -21,7 +23,7 @@
 
     <sql id="Base_Column_List">
         id,brief,content,
-        type,create_user,backup1,
+        type,producer,consumer,status,backup1,
         backup2,remark,is_deleted,
         create_time,update_time,version
     </sql>
