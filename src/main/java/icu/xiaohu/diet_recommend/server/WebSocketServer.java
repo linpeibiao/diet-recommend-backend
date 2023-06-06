@@ -3,10 +3,12 @@ package icu.xiaohu.diet_recommend.server;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import icu.xiaohu.diet_recommend.model.entity.Message;
+import icu.xiaohu.diet_recommend.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -26,16 +28,15 @@ public class WebSocketServer {
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
-    private static volatile int onlineCount = 0;
+    private volatile int onlineCount = 0;
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。
      */
-    private static ConcurrentHashMap<Long, WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
-
+    private ConcurrentHashMap<Long, WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
     /**
      * 管理员连接单独维护
      */
-    private static ConcurrentHashMap<Long, WebSocketServer> adminWebSocketMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Long, WebSocketServer> adminWebSocketMap = new ConcurrentHashMap<>();
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
@@ -45,11 +46,14 @@ public class WebSocketServer {
      */
     private Long userId;
 
+    @Resource
+    private MessageService messageService;
+
 
     /**
      * 发送自定义消息
      **/
-    public static void sendInfo(Message message, Long toUserId) {
+    public void sendInfo(Message message, Long toUserId) {
         log.info("发送消息到:" + toUserId + "，报文:" + message);
         if (webSocketMap.containsKey(toUserId)) {
             JSONObject json = (JSONObject) JSON.toJSON(message);
@@ -57,6 +61,7 @@ public class WebSocketServer {
         } else {
             log.error("用户" + toUserId + ",不在线！");
             // TODO 将消息保存数据库
+            messageService.save(message);
 
         }
     }
@@ -64,7 +69,7 @@ public class WebSocketServer {
     /**
      * 发起审核
      **/
-    public static void sendCheck(String message, Long byUserId) {
+    public void sendCheck(String message, Long byUserId) {
         log.info("用户"+ byUserId +"发起审核推送");
         // 管理员是否在线
         if (adminWebSocketMap.isEmpty()) {
@@ -79,7 +84,7 @@ public class WebSocketServer {
     /**
      * 发送自定义实体消息
      **/
-    public static void sendStatusInfo(Object message, String userId) {
+    public void sendStatusInfo(Object message, String userId) {
         log.info("发送消息到:" + userId + "，报文:" + message);
         if (webSocketMap.containsKey(userId)) {
             webSocketMap.get(userId).sendStatusInfo(message);
@@ -107,6 +112,7 @@ public class WebSocketServer {
                 // 在线数加1
                 addOnlineCount();
             }
+            // TODO 给上线的管理员推送审核消息
         }else{
             if (webSocketMap.containsKey(userId)) {
                 webSocketMap.remove(userId);
@@ -118,6 +124,7 @@ public class WebSocketServer {
                 // 在线数加1
                 addOnlineCount();
             }
+            // TODO 给上线的用户推送审核结果消息
         }
 
         log.info("用户连接:" + userId + ",当前在线人数为:" + getOnlineCount());
@@ -215,21 +222,21 @@ public class WebSocketServer {
      *
      * @return
      */
-    public static synchronized int getOnlineCount() {
+    public synchronized int getOnlineCount() {
         return onlineCount;
     }
 
     /**
      * 在线人数加1
      */
-    public static synchronized void addOnlineCount() {
-        WebSocketServer.onlineCount++;
+    public synchronized void addOnlineCount() {
+        onlineCount++;
     }
 
     /**
      * 在线人数减1
      */
-    public static synchronized void subOnlineCount() {
-        WebSocketServer.onlineCount--;
+    public synchronized void subOnlineCount() {
+        onlineCount--;
     }
 }

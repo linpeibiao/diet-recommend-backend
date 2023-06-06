@@ -37,6 +37,8 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
     private IUserMealService userMealService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     @Override
     public boolean add(List<Meal> meals, HttpServletRequest request) {
@@ -73,7 +75,7 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
 
         boolean save = this.saveBatch(meals);
         // 发起管理员审核
-        WebSocketServer.sendCheck("用户新建餐品信息,需审核", user.getId());
+        webSocketServer.sendCheck("用户新建餐品信息,需审核", user.getId());
         return save;
     }
 

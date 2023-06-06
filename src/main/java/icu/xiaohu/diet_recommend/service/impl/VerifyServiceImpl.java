@@ -1,6 +1,5 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.Query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
@@ -14,7 +13,6 @@ import icu.xiaohu.diet_recommend.util.UserHolder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.sql.ClientInfoStatus;
 import java.util.List;
 
 /**
@@ -26,6 +24,8 @@ import java.util.List;
 public class VerifyServiceImpl implements VerifyService {
     @Resource
     private IMealService mealService;
+    @Resource
+    private WebSocketServer webSocketServer;
     @Override
     public Meal mealVerify(Long mealId, Integer status) {
         // 参数判断
@@ -53,7 +53,7 @@ public class VerifyServiceImpl implements VerifyService {
                 .setType("系统通知")
                 // 未读
                 .setStatus(0);
-        WebSocketServer.sendInfo(msg, msg.getConsumer());
+        webSocketServer.sendInfo(msg, msg.getConsumer());
         return meal;
     }
 
