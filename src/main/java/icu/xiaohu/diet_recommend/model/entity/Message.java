@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="t_message")
 @Data
+@Accessors(chain = true)
 public class Message implements Serializable {
     /**
      * 主键

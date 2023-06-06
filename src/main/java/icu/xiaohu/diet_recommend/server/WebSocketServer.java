@@ -2,6 +2,7 @@ package icu.xiaohu.diet_recommend.server;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import icu.xiaohu.diet_recommend.model.entity.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -25,16 +26,16 @@ public class WebSocketServer {
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
-    private static int onlineCount = 0;
+    private static volatile int onlineCount = 0;
     /**
      * concurrent包的线程安全Set，用来存放每个客户端对应的WebSocket对象。
      */
-    private static ConcurrentHashMap<String, WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Long, WebSocketServer> webSocketMap = new ConcurrentHashMap<>();
 
     /**
      * 管理员连接单独维护
      */
-    private static ConcurrentHashMap<String, WebSocketServer> adminWebSocketMap = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Long, WebSocketServer> adminWebSocketMap = new ConcurrentHashMap<>();
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
@@ -42,18 +43,21 @@ public class WebSocketServer {
     /**
      * 接收 userId 用于区别
      */
-    private String userId;
+    private Long userId;
 
 
     /**
      * 发送自定义消息
      **/
-    public static void sendInfo(String message, Long userId) {
-        log.info("发送消息到:" + userId + "，报文:" + message);
-        if (webSocketMap.containsKey(userId)) {
-            webSocketMap.get(userId).sendMessage(message);
+    public static void sendInfo(Message message, Long toUserId) {
+        log.info("发送消息到:" + toUserId + "，报文:" + message);
+        if (webSocketMap.containsKey(toUserId)) {
+            JSONObject json = (JSONObject) JSON.toJSON(message);
+            webSocketMap.get(toUserId).sendMessage(json.toJSONString());
         } else {
-            log.error("用户" + userId + ",不在线！");
+            log.error("用户" + toUserId + ",不在线！");
+            // TODO 将消息保存数据库
+
         }
     }
 
@@ -67,7 +71,7 @@ public class WebSocketServer {
 
         }
         // 直接遍历管理员会话
-        for (Map.Entry<String, WebSocketServer> admin : adminWebSocketMap.entrySet()) {
+        for (Map.Entry<Long, WebSocketServer> admin : adminWebSocketMap.entrySet()) {
             admin.getValue().sendMessage(message);
         }
     }
@@ -88,7 +92,7 @@ public class WebSocketServer {
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam("admin") String admin, @PathParam("userId") String userId) {
+    public void onOpen(Session session, @PathParam("admin") String admin, @PathParam("userId") Long userId) {
         this.session = session;
         this.userId = userId;
         // 判断管理员
@@ -157,6 +161,7 @@ public class WebSocketServer {
                     webSocketMap.get(touserId).sendMessage(message);
                 } else {
                     //userId不存在
+                    // TODO 将消息保存在数据库，等用户上线再推送
                     log.error("请求的userId:" + touserId + "不在该服务器上");
                     webSocketMap.get(this.userId).sendMessage("请求的userId:" + touserId + "不在该服务器上");
                 }
