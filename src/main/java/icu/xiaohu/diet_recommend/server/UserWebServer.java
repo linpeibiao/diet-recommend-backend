@@ -99,15 +99,4 @@ public class UserWebServer extends WebSocketServer {
 //        }
     }
 
-    @Override
-    public void onError(Session session, Throwable error) {
-        log.error("用户错误:" + this.userId + ",原因:" + error.getMessage());
-        try {
-            session.getBasicRemote().sendText("服务端错误");
-        } catch (IOException e) {
-            e.printStackTrace();
-            error.printStackTrace();
-        }
-    }
-
 }

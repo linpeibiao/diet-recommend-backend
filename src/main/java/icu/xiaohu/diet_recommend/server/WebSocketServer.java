@@ -72,7 +72,15 @@ public abstract class WebSocketServer {
      * @param error
      */
     @OnError
-    public abstract void onError(Session session, Throwable error);
+    public void onError(Session session, Throwable error){
+        log.error("用户错误:" + this.userId + ",原因:" + error.getMessage());
+        try {
+            session.getBasicRemote().sendText("服务端错误");
+        } catch (IOException e) {
+            e.printStackTrace();
+            error.printStackTrace();
+        }
+    }
 
     /**
      * 实现服务器主动推送

@@ -70,15 +70,4 @@ public class AdminWebServer extends WebSocketServer {
     public void onMessage(String data, Session session) {
 
     }
-
-    @Override
-    public void onError(Session session, Throwable error) {
-        log.error("用户错误:" + this.userId + ",原因:" + error.getMessage());
-        try {
-            session.getBasicRemote().sendText("服务端错误");
-        } catch (IOException e) {
-            e.printStackTrace();
-            error.printStackTrace();
-        }
-    }
 }
