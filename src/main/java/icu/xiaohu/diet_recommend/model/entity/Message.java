@@ -1,6 +1,5 @@
 package icu.xiaohu.diet_recommend.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -10,13 +9,15 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
- * 
+ *
  * @TableName t_message
+ * @author xiaohu
  */
 @TableName(value ="t_message")
 @Data
 @Accessors(chain = true)
 public class Message implements Serializable {
+
     /**
      * 主键
      */

@@ -1,15 +1,20 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import icu.xiaohu.diet_recommend.constant.MessageStatus;
+import icu.xiaohu.diet_recommend.constant.MessageType;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.mapper.MealMapper;
+import icu.xiaohu.diet_recommend.model.entity.Message;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.server.UserWebServer;
 import icu.xiaohu.diet_recommend.server.WebSocketServer;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -20,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -37,8 +43,8 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
     private IUserMealService userMealService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private WebSocketServer webSocketServer;
+    @Resource(name = "userWebServer")
+    private WebSocketServer userWebServer;
 
     @Override
     public boolean add(List<Meal> meals, HttpServletRequest request) {
@@ -75,7 +81,14 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
 
         boolean save = this.saveBatch(meals);
         // 发起管理员审核
-        webSocketServer.sendCheck("用户新建餐品信息,需审核", user.getId());
+        Message message = new Message();
+        message.setType(MessageType.ADD_CHECK.getType())
+                .setContent(JSON.toJSONString(meals))
+                .setProducer(user.getId())
+                .setBrief("新增餐品数据")
+                .setStatus(MessageStatus.NOT_READ.getStatus());
+
+        userWebServer.sendInfo(message);
         return save;
     }
 

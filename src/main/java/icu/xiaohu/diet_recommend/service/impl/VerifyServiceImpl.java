@@ -24,8 +24,8 @@ import java.util.List;
 public class VerifyServiceImpl implements VerifyService {
     @Resource
     private IMealService mealService;
-    @Resource
-    private WebSocketServer webSocketServer;
+    @Resource(name = "adminWebServer")
+    private WebSocketServer adminWebSocket;
     @Override
     public Meal mealVerify(Long mealId, Integer status) {
         // 参数判断
@@ -53,7 +53,7 @@ public class VerifyServiceImpl implements VerifyService {
                 .setType("系统通知")
                 // 未读
                 .setStatus(0);
-        webSocketServer.sendInfo(msg, msg.getConsumer());
+        adminWebSocket.sendInfo(msg);
         return meal;
     }
 
