@@ -1,16 +1,20 @@
 package icu.xiaohu.diet_recommend.server;
 
+import cn.hutool.json.JSONUtil;
 import icu.xiaohu.diet_recommend.model.entity.Message;
+import icu.xiaohu.diet_recommend.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author xiaohu
@@ -21,6 +25,11 @@ import java.io.IOException;
 @Component("adminWebServer")
 @ServerEndpoint("/server/admin/{userId}")
 public class AdminWebServer extends WebSocketServer {
+    private static MessageService messageService;
+    @Autowired
+    public void setMessageService(MessageService messageService){
+        AdminWebServer.messageService = messageService;
+    }
 
     @Override
     @OnOpen
@@ -38,8 +47,15 @@ public class AdminWebServer extends WebSocketServer {
             addOnlineCount();
         }
         log.info("管理员连接:" + userId + ",当前在线人数为:" + getOnlineCount());
-        // 建立连接之后查询是否有待办消息
+        goCheck();
+    }
 
+    private void goCheck() {
+        // 建立连接之后查询是否有待办消息
+        List<Message> notCheckMessage = messageService.getNotCheckMessage();
+        String jsonStr = JSONUtil.toJsonStr(notCheckMessage);
+        this.sendMessage(jsonStr);
+        log.info("未审核消息:{}", jsonStr);
     }
 
     @Override

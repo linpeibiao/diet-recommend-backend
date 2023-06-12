@@ -3,7 +3,6 @@ package icu.xiaohu.diet_recommend.server;
 import icu.xiaohu.diet_recommend.model.entity.Message;
 import icu.xiaohu.diet_recommend.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.annotation.Resource;
 import javax.websocket.*;
 import java.io.IOException;
@@ -37,9 +36,6 @@ public abstract class WebSocketServer {
      * 接收 userId 用于区别
      */
     protected Long userId;
-
-    @Resource
-    protected MessageService messageService;
 
     /**
      * 发送信息

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -57,11 +59,13 @@ public class Message implements Serializable {
     /**
      * 备用字段1
      */
+    @JsonIgnore
     private String backup1;
 
     /**
      * 备用字段2
      */
+    @JsonIgnore
     private String backup2;
 
     /**
@@ -72,6 +76,7 @@ public class Message implements Serializable {
     /**
      * 逻辑删除
      */
+    @JsonIgnore
     private Integer isDeleted;
 
     /**
@@ -87,6 +92,7 @@ public class Message implements Serializable {
     /**
      * 乐观锁
      */
+    @JsonIgnore
     private Integer version;
 
     @TableField(exist = false)

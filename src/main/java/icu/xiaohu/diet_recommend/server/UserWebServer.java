@@ -2,16 +2,18 @@ package icu.xiaohu.diet_recommend.server;
 
 import icu.xiaohu.diet_recommend.constant.MessageType;
 import icu.xiaohu.diet_recommend.model.entity.Message;
+import icu.xiaohu.diet_recommend.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -23,6 +25,11 @@ import java.util.Map;
 @Component("userWebServer")
 @ServerEndpoint("/server/user/{userId}")
 public class UserWebServer extends WebSocketServer {
+    private static MessageService messageService;
+    @Autowired
+    public void setMessageService(MessageService messageService){
+        UserWebServer.messageService = messageService;
+    }
     @Override
     public void sendInfo(Message message) {
         String type = message.getType();
