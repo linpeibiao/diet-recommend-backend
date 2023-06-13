@@ -27,6 +27,16 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
         QueryWrapper<Message> query = new QueryWrapper<>();
         query.eq("type", MessageType.ADD_CHECK.getType());
         query.eq("status", MessageStatus.NOT_READ.getStatus());
+        query.orderBy(true, false,"update_time");
+        return list(query);
+    }
+
+    @Override
+    public List<Message> getNotReadMessage(Long userId) {
+        QueryWrapper<Message> query = new QueryWrapper<>();
+        query.eq("consumer", userId);
+        query.eq("status", MessageStatus.NOT_READ.getStatus());
+        query.orderBy(true, false,"update_time");
         return list(query);
     }
 }

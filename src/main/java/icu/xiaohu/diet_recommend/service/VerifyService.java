@@ -18,6 +18,10 @@ public interface VerifyService {
      */
     Meal mealVerify(Long mealId, Integer status);
 
+    /**
+     * 查看未审核餐品列表
+     * @return
+     */
     List<Meal> getToVerifyMeal();
 
 }

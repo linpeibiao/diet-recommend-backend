@@ -1,6 +1,7 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import icu.xiaohu.diet_recommend.constant.MessageStatus;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.Message;
@@ -52,7 +53,7 @@ public class VerifyServiceImpl implements VerifyService {
                 .setConsumer(meal.getCreateUserId())
                 .setType("系统通知")
                 // 未读
-                .setStatus(0);
+                .setStatus(MessageStatus.NOT_READ.getStatus());
         adminWebSocket.sendInfo(msg);
         return meal;
     }
@@ -60,7 +61,8 @@ public class VerifyServiceImpl implements VerifyService {
     @Override
     public List<Meal> getToVerifyMeal() {
         QueryWrapper<Meal> query = new QueryWrapper<>();
-        query.eq("status", 1);
+        query.eq("status",1);
+        query.orderBy(true, true, "create_time");
         return mealService.list(query);
     }
 }

@@ -18,4 +18,11 @@ public interface MessageService extends IService<Message> {
      */
     List<Message> getNotCheckMessage();
 
+    /**
+     * 获取未读消息
+     * @param userId
+     * @return
+     */
+    List<Message> getNotReadMessage(Long userId);
+
 }

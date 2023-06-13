@@ -1,5 +1,6 @@
 package icu.xiaohu.diet_recommend.server;
 
+import cn.hutool.json.JSONUtil;
 import icu.xiaohu.diet_recommend.constant.MessageType;
 import icu.xiaohu.diet_recommend.model.entity.Message;
 import icu.xiaohu.diet_recommend.service.MessageService;
@@ -14,6 +15,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,7 +68,16 @@ public class UserWebServer extends WebSocketServer {
             addOnlineCount();
         }
         log.info("用户连接:" + userId + ",当前在线人数为:" + getOnlineCount());
-        // TODO 给上线的用户推送审核结果消息
+        goRead(userId);
+
+    }
+
+    private void goRead(Long userId) {
+        // 建立连接之后查询是否有未读消息
+        List<Message> notReadMessage = messageService.getNotReadMessage(userId);
+        String jsonStr = JSONUtil.toJsonStr(notReadMessage);
+        this.sendMessage(jsonStr);
+        log.info("未读消息:{}", jsonStr);
     }
 
 

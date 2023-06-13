@@ -10,6 +10,7 @@ import icu.xiaohu.diet_recommend.service.IMealService;
 import icu.xiaohu.diet_recommend.service.VerifyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +38,10 @@ public class VerifyController {
      * @return
      */
 
-    @PostMapping("/meal")
+    @PostMapping("/check-meal")
     @ApiOperation("餐品信息审核")
     @AuthCheck(mustRole = UserRole.ADMIN)
-    public Result<Object> mealVerify(Long mealId, Integer status){
+    public Result<Object> mealVerify(@Param("mealId") Long mealId, @Param("status") Integer status){
 
         Meal meal = verifyService.mealVerify(mealId, status);
         if (meal == null) {
@@ -49,7 +50,7 @@ public class VerifyController {
         return Result.success(meal.getName() + "已审核");
     }
 
-    @GetMapping("/meal")
+    @GetMapping("/get-meals")
     @ApiOperation("获取待审核餐品")
     @AuthCheck(mustRole = UserRole.ADMIN)
     public Result<List<Meal>> getToVerifyMeal(){
