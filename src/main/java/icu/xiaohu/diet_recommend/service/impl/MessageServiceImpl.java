@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import icu.xiaohu.diet_recommend.constant.MessageStatus;
 import icu.xiaohu.diet_recommend.constant.MessageType;
-import icu.xiaohu.diet_recommend.exception.BusinessException;
-import icu.xiaohu.diet_recommend.model.entity.Message;
-import icu.xiaohu.diet_recommend.model.result.ResultCode;
-import icu.xiaohu.diet_recommend.service.MessageService;
 import icu.xiaohu.diet_recommend.mapper.MessageMapper;
+import icu.xiaohu.diet_recommend.model.entity.Message;
+import icu.xiaohu.diet_recommend.service.MessageService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

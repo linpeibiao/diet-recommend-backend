@@ -1,9 +1,8 @@
 package icu.xiaohu.diet_recommend.server;
 
 import icu.xiaohu.diet_recommend.model.entity.Message;
-import icu.xiaohu.diet_recommend.service.MessageService;
 import lombok.extern.slf4j.Slf4j;
-import javax.annotation.Resource;
+
 import javax.websocket.*;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
