@@ -123,10 +123,11 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
         }
 
         QueryWrapper<UserMeal> query = new QueryWrapper<>();
-        query.eq("mealId", mealId);
+        query.eq("meal_id", mealId);
+        query.eq("user_id", user.getId());
         UserMeal userMeal = userMealService.getOne(query);
         // 不是该用户增添，去除
-        if (!userMeal.getUserId().equals(user.getId())){
+        if (userMeal == null){
             throw new BusinessException(ResultCode.NO_AUTH, "仅餐品创建者可以更新");
         }
         return this.updateById(meal);
