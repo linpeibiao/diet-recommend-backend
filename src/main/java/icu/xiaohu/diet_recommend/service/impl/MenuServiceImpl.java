@@ -102,6 +102,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean delete(List<Long> menuIds) {
+        // 错误提示消息
+        StringBuilder errMsg = new StringBuilder();
+        // 参数是否合法标识
+        boolean isValidate = false;
+
         // 非管理员只能删除自己创建的菜单
         // 还要将关系删除
         QueryWrapper<MenuMeal> queryWrapper = new QueryWrapper<>();
@@ -115,12 +120,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         User user = UserHolder.get();
         for (Long menuId : menuIds) {
             QueryWrapper<Menu> query = new QueryWrapper<>();
-            query.eq("menu_id", menuId);
+            query.eq("id", menuId);
             Menu menu = this.getOne(query);
             // 不是该用户增添，去除
-            if (!menu.getCreateUserId().equals(user.getId())){
-                menuIds.remove(menuId);
+            if (menu == null || !menu.getCreateUserId().equals(user.getId())){
+                errMsg.append("id 为" + menuId + "的菜单非您创建，无权限删除");
+                isValidate = true;
             }
+        }
+        if (isValidate){
+            throw new BusinessException(ResultCode.FAIL, errMsg.toString());
         }
         menuMealMapper.delete(queryWrapper);
         return removeBatchByIds(menuIds);
