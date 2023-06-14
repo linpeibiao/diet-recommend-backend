@@ -94,6 +94,11 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
 
     @Override
     public boolean delete(List<Long> mealIds) {
+        // 错误提示消息
+        StringBuilder errMsg = new StringBuilder();
+        // 参数是否合法标识
+        boolean isValidate = false;
+
         // 判端用户身份
         User user = UserHolder.get();
         if (UserRole.ADMIN.getRoleName().equals(user.getRoleName().getRoleName())){
@@ -103,11 +108,16 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
         for (Long mealId : mealIds){
             QueryWrapper<UserMeal> query = new QueryWrapper<>();
             query.eq("meal_id", mealId);
+            query.eq("user_id", user.getId());
             UserMeal userMeal = userMealService.getOne(query);
             // 不是该用户增添，去除
-            if (!userMeal.getUserId().equals(user.getId())){
-                mealIds.remove(mealId);
+            if (userMeal == null){
+                errMsg.append("id 为" + mealId + "的餐品非您创建，无权限删除");
+                isValidate = true;
             }
+        }
+        if (isValidate){
+            throw new BusinessException(ResultCode.FAIL, errMsg.toString());
         }
         // 前端页面当然只能在个人页面那可以选择删除
 

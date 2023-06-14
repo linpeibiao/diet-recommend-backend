@@ -3,6 +3,8 @@ package icu.xiaohu.diet_recommend.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import icu.xiaohu.diet_recommend.anotation.AuthCheck;
+import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.model.dto.MenuDto;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.Menu;
@@ -31,6 +33,7 @@ public class PlanController {
 
     @ApiOperation("用户计划列表")
     @PostMapping("/list/{pageNum}/{pageSize}")
+    @AuthCheck(mustRole = UserRole.ADMIN)
     public Result<IPage<Plan>> listQuery(@PathVariable("pageNum")int pageNum,
                                          @PathVariable("pageSize")int pageSize){
         if (pageNum <= 0 || pageSize <= 0){
