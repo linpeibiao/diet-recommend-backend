@@ -2,7 +2,9 @@ package icu.xiaohu.diet_recommend.mapper;
 
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import icu.xiaohu.diet_recommend.model.vo.MealGradeVo;
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +22,11 @@ public interface UserMealMapper extends BaseMapper<UserMeal> {
      * @return
      */
     List<RelateDTO> getUserMealRelate();
+
+    /**
+     * 获取用户评价
+     * @param userId
+     * @return
+     */
+    List<MealGradeVo> getMyJudge(@Param("userId") Long userId);
 }

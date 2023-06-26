@@ -3,6 +3,7 @@ package icu.xiaohu.diet_recommend.service;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import com.baomidou.mybatisplus.extension.service.IService;
+import icu.xiaohu.diet_recommend.model.vo.MealGradeVo;
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
 
 import java.util.List;
@@ -35,6 +36,12 @@ public interface IUserMealService extends IService<UserMeal> {
      * @return
      */
     boolean add(List<UserMeal> userMeals);
+
+    /**
+     * 获取当前用户的评价
+     * @return
+     */
+    List<MealGradeVo> getMyJudge();
 
     /**
      * 获取饮食排行榜

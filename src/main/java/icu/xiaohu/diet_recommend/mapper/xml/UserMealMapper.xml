@@ -3,6 +3,16 @@
 <mapper namespace="icu.xiaohu.diet_recommend.mapper.UserMealMapper">
 
     <select id="getUserMealRelate" resultType="icu.xiaohu.diet_recommend.recommend.dto.RelateDTO">
-        select user_id, meal_id, grade from t_user_meal where 1 = 1;
+        select user_id, meal_id, grade
+        from t_user_meal
+        where 1 = 1;
+    </select>
+
+    <select id="getMyJudge" resultType="icu.xiaohu.diet_recommend.model.vo.MealGradeVo">
+        SELECT tm.`name` AS mealName, tum.grade, tum.tag
+        FROM `t_user_meal` tum
+                 LEFT JOIN t_meal tm ON tm.id = tum.meal_id
+        WHERE user_id = #{userId}
+        ORDER By tum.update_time;
     </select>
 </mapper>

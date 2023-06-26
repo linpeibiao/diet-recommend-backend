@@ -9,6 +9,7 @@ import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.mapper.UserMealMapper;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.model.vo.MealGradeVo;
 import icu.xiaohu.diet_recommend.recommend.Recommend;
 import icu.xiaohu.diet_recommend.recommend.dto.RelateDTO;
 import icu.xiaohu.diet_recommend.service.IMealService;
@@ -98,6 +99,16 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
 
         return this.saveBatch(userMeals);
 
+    }
+
+    @Override
+    public List<MealGradeVo> getMyJudge() {
+        // 获取当前用户
+        User user = UserHolder.get();
+        if (user == null){
+            throw new BusinessException(ResultCode.FAIL);
+        }
+        return userMealMapper.getMyJudge(user.getId());
     }
 
     @Override

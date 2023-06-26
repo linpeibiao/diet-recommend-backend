@@ -10,6 +10,7 @@ import icu.xiaohu.diet_recommend.model.entity.UserBodyInfo;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.model.vo.MealGradeVo;
 import icu.xiaohu.diet_recommend.service.IPlanService;
 import icu.xiaohu.diet_recommend.service.IUserMealService;
 import icu.xiaohu.diet_recommend.service.UserBodyInfoService;
@@ -66,6 +67,15 @@ public class UserApi {
         boolean isSuccess = userMealService.add(userMeals);
         return Result.success(isSuccess);
     }
+
+    @ApiOperation("我的评价")
+    @PostMapping("/judge/")
+    public Result<MealGradeVo> judge(){
+        List<MealGradeVo> myJudge = userMealService.getMyJudge();
+        return Result.success(myJudge);
+    }
+
+
 
     @ApiOperation("获取用户个人信息")
     @PostMapping("/info/{userId}")
