@@ -2,7 +2,7 @@
 # 数据库备份（定时任务脚本）
 # 定义变量
 DB_USER="root"
-DB_PASSWORD="linpeibiaoxiaohu"
+DB_PASSWORD="123456"
 DB_NAME="diet_recommend"
 BACKUP_DIR="/home/lpb/code/diet-recommend/databackup"
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
