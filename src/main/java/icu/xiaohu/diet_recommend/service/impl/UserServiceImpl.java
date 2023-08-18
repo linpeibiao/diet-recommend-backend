@@ -76,9 +76,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public void logout(HttpServletRequest request) {
         String token = request.getHeader("token");
+        String account = UserHolder.get().getAccount();
         if (!StringUtils.isBlank(token)) {
             stringRedisTemplate.delete(LOGIN_USER_KEY + token);
         }
+        UserHolder.removeToken(account);
         UserHolder.remove();
     }
 
@@ -97,6 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (!code.equals(redisCode)){
             throw new BusinessException(ResultCode.PARAMS_ERROR, "验证码不正确");
         }
+
         // 3通过手机号获取用户
         User user = getOne(new QueryWrapper<User>()
                 .eq("phone", phone));
@@ -108,6 +111,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 5判断用户账户状态
         if (user.getStatus() == 1){
             throw new BusinessException(ResultCode.FAIL, "账户异常，无法登录");
+        }
+
+        // 判断用户是否已经登录
+        if (!StringUtils.isEmpty(UserHolder.getToken(user.getAccount()))){
+            return UserHolder.getToken(user.getAccount());
         }
         return loginCommonWork(user, user.getPhone());
     }
@@ -234,6 +242,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (!encryptPassword.equals(user.getPassword())){
             throw new BusinessException(ResultCode.PARAMS_ERROR, "密码输入错误");
         }
+        // 判断是否已经登陆
+        if (!StringUtils.isEmpty(UserHolder.getToken(account))){
+            return UserHolder.getToken(account);
+        }
         // 6. 生成token,保存在redis,并设置有效期
         return loginCommonWork(user, user.getAccount());
     }
@@ -307,6 +319,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String token = JwtHelper.createToken(user.getId(), keyword);
         // 6.1将User转换成Map
         saveUserInfoToRedis(user, token);
+        // 7 保存登陆状态
+        UserHolder.saveToken(user.getAccount(), token);
         // 返回token
         return token;
     }
