@@ -48,6 +48,7 @@ public class AuthInterceptor {
         // 当前登录用户
         User user = userService.curUser(request);
         if (user == null){
+            // TODO 说明没有token,或者过期 删除userMap的登录状态
             throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
         }
         // 拥有任意权限即通过
