@@ -22,7 +22,7 @@ public class RedisConstant {
     /**
      * 用户信息缓存有效时间
      */
-    public static final long LOGIN_USER_TTL = 365L * 24L * 60L;
+    public static final long LOGIN_USER_TTL = 14L * 24L * 60L;
 
     /**
      * 饮食评分数据缓存 key

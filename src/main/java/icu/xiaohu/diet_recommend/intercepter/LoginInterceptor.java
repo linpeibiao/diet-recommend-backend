@@ -49,9 +49,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
         }
         // 1.判断是否需要拦截（是否存在分佈式session）
-        String tokenKey = LOGIN_USER_KEY + token;
         // 先从 redis 中拿到登录信息，若数据为空，返回false
-        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(tokenKey);
+        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(token);
         // 判断 userMap
         if (userMap.isEmpty()){
             throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");

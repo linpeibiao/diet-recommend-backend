@@ -17,6 +17,7 @@ import icu.xiaohu.diet_recommend.model.vo.LoginUser;
 import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.CodeGenerator;
 import icu.xiaohu.diet_recommend.util.JwtHelper;
+import icu.xiaohu.diet_recommend.util.TokenHolder;
 import icu.xiaohu.diet_recommend.util.UserHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -62,9 +63,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (StringUtils.isBlank(token)){
             throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
         }
-        String tokenKey = LOGIN_USER_KEY + token;
         // 先从 redis 中拿到登录信息，若数据为空，返回false
-        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(tokenKey);
+        Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(token);
         // 判断 userMap
         if (userMap.isEmpty()){
             throw new BusinessException(ResultCode.NOT_LOGIN, "未登录");
@@ -78,9 +78,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String token = request.getHeader("token");
         String account = UserHolder.get().getAccount();
         if (!StringUtils.isBlank(token)) {
-            stringRedisTemplate.delete(LOGIN_USER_KEY + token);
+            stringRedisTemplate.delete(token);
         }
-        UserHolder.removeToken(account);
+        TokenHolder.remove(account);
         UserHolder.remove();
     }
 
@@ -114,8 +114,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 判断用户是否已经登录
-        if (!StringUtils.isEmpty(UserHolder.getToken(user.getAccount()))){
-            return UserHolder.getToken(user.getAccount());
+        if (isLogin(user.getAccount())){
+            return TokenHolder.getToken(user.getAccount());
         }
         return loginCommonWork(user, user.getPhone());
     }
@@ -243,8 +243,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ResultCode.PARAMS_ERROR, "密码输入错误");
         }
         // 判断是否已经登陆
-        if (!StringUtils.isEmpty(UserHolder.getToken(account))){
-            return UserHolder.getToken(account);
+        if (isLogin(account)){
+            return TokenHolder.getToken(account);
         }
         // 6. 生成token,保存在redis,并设置有效期
         return loginCommonWork(user, user.getAccount());
@@ -283,6 +283,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     /**
+     * 判断用户是否已经登陆
+     * @param account
+     * @return
+     */
+    public boolean isLogin(String account){
+        if (StringUtils.isBlank(account)) {
+            return false;
+        }
+        String prefix = LOGIN_USER_KEY + account + ":";
+        Set<String> keys = stringRedisTemplate.keys(prefix + "*");
+        return !keys.isEmpty();
+    }
+
+    /**
      * 禁止用户通过用户id
      * @param ids
      */
@@ -317,12 +331,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private String loginCommonWork(User user, String keyword){
         // 6生成token令牌，将用户信息和token一并保存在redis, 并设置有效期。
         String token = JwtHelper.createToken(user.getId(), keyword);
+        String tokenKey = LOGIN_USER_KEY + user.getAccount() + ":" + token;
         // 6.1将User转换成Map
-        saveUserInfoToRedis(user, token);
+        saveUserInfoToRedis(user, tokenKey);
         // 7 保存登陆状态
-        UserHolder.saveToken(user.getAccount(), token);
+        TokenHolder.setToken(user.getAccount(), token);
         // 返回token
-        return token;
+        return tokenKey;
     }
 
     private void saveUserInfoToRedis(User user, String token){
@@ -345,10 +360,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                             return fieldValue;
                         }));
         // 6.2以hash的类型保存在redis
-        String tokenKey = LOGIN_USER_KEY + token;
-        stringRedisTemplate.opsForHash().putAll(tokenKey, userMap);
+        stringRedisTemplate.opsForHash().putAll(token, userMap);
         // 6.3设置有效期
-        stringRedisTemplate.expire(tokenKey, LOGIN_USER_TTL, TimeUnit.MINUTES);
+        stringRedisTemplate.expire(token, LOGIN_USER_TTL, TimeUnit.MINUTES);
     }
 
     /**
