@@ -2,7 +2,7 @@ FROM openjdk:8
 
 RUN mkdir /usr/myapp
 
-COPY target/diet_recommend-1.0-SNAPSHOT.jar /usr/myapp
+COPY target/diet-recommend-backend-1.0-SNAPSHOT.jar /usr/myapp
 
 WORKDIR /usr/myapp
 
