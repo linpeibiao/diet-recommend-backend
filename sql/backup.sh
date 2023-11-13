@@ -4,7 +4,7 @@
 DB_USER="root"
 DB_PASSWORD="123456"
 DB_NAME="diet_recommend"
-BACKUP_DIR="/home/lpb/code/diet-recommend/databackup"
+BACKUP_DIR="/home/code/diet-recommend/databackup"
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
 DAYS_TO_KEEP=10
 
