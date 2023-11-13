@@ -1,6 +1,7 @@
 package icu.xiaohu.diet_recommend.exception;
 
 import icu.xiaohu.diet_recommend.model.result.Result;
+import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result error(BusinessException e) {
         e.printStackTrace();
-        return Result.fail(e.getDescription());
+        return Result.fail(e.getResultCode());
     }
 }
