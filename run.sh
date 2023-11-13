@@ -6,4 +6,4 @@ docker stop diet-recommend
 docker rm diet-recommend
 docker image rm diet-recommend:v1.0.0
 docker build . -f Dockerfile -t diet-recommend:v1.0.0
-docker run -d --name diet-recommend -p 8085:8888 -v /home/code/diet-recommend/log/bcakend.log:/home/code/diet-recommend/log/backend.log diet-recommend:v1.0.0
+docker run -d --name diet-recommend -p 8085:8888 -v /home/code/diet-recommend/log/backend.log:/home/code/diet-recommend/log/backend.log diet-recommend:v1.0.0
