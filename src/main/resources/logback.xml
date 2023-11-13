@@ -1,6 +1,6 @@
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>/home/code/diet-recommend/log/backend.log</file>
+        <file>/home/log/backend.log</file>
         <encoder>
             <pattern>%d %-5p [%c] - %m%n</pattern>
         </encoder>
