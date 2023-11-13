@@ -1,6 +1,7 @@
 FROM openjdk:8
 
 RUN mkdir /usr/myapp
+RUN touch /home/code/diet-recommend/log/backend.log
 
 COPY target/diet-recommend-backend-1.0-SNAPSHOT.jar /usr/myapp
 
