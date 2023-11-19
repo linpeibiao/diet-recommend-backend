@@ -114,8 +114,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 判断用户是否已经登录
-        if (isLogin(user.getAccount())){
-            return TokenHolder.getToken(user.getAccount());
+        String token = "";
+        if (!StringUtils.isBlank(token = isLogin(user.getAccount()))){
+            return StringUtils.isBlank(TokenHolder.getToken(user.getAccount())) ? token : TokenHolder.getToken(user.getAccount());
         }
         return loginCommonWork(user, user.getPhone());
     }
@@ -242,9 +243,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (!encryptPassword.equals(user.getPassword())){
             throw new BusinessException(ResultCode.PARAMS_ERROR, "密码输入错误");
         }
-        // 判断是否已经登陆
-        if (isLogin(account)){
-            return TokenHolder.getToken(account);
+        // 判断用户是否已经登录
+        String token = "";
+        if (!StringUtils.isBlank(token = isLogin(user.getAccount()))){
+            return StringUtils.isBlank(TokenHolder.getToken(user.getAccount())) ? token : TokenHolder.getToken(user.getAccount());
         }
         // 6. 生成token,保存在redis,并设置有效期
         return loginCommonWork(user, user.getAccount());
@@ -287,13 +289,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @param account
      * @return
      */
-    public boolean isLogin(String account){
+    public String isLogin(String account){
         if (StringUtils.isBlank(account)) {
-            return false;
+            return "";
         }
         String prefix = LOGIN_USER_KEY + account + ":";
         Set<String> keys = stringRedisTemplate.keys(prefix + "*");
-        return !keys.isEmpty();
+        if (!keys.isEmpty()){
+            return stringRedisTemplate.opsForValue().get(keys.iterator().next());
+        }
+        return "";
     }
 
     /**
