@@ -296,7 +296,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String prefix = LOGIN_USER_KEY + account + ":";
         Set<String> keys = stringRedisTemplate.keys(prefix + "*");
         if (!keys.isEmpty()){
-            return stringRedisTemplate.opsForValue().get(keys.iterator().next());
+            return keys.iterator().next();
         }
         return "";
     }
