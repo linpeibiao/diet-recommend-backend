@@ -1,11 +1,13 @@
 package icu.xiaohu.diet_recommend.model.result;
 
+import java.io.Serializable;
+
 /**
  * @author xiaohu
  * @date 2022/11/22/ 15:48
  * @description 统一返回状态码
  */
-public enum ResultCode {
+public enum ResultCode implements Serializable {
     SUCCESS(20000, "ok", ""),
     FAIL(40000, "请求失败", ""),
     NULL_ERROR(40001, "请求数据为空", ""),

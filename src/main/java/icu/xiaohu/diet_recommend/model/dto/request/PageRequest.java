@@ -2,13 +2,15 @@ package icu.xiaohu.diet_recommend.model.dto.request;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author xiaohu
  * @date 2023/05/02/ 14:48
  * @description
  */
 @Data
-public class PageRequest {
+public class PageRequest implements Serializable {
     /**
      * 当前页号
      */

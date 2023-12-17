@@ -4,6 +4,7 @@ import icu.xiaohu.diet_recommend.model.entity.Material;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @description
  */
 @Data
-public class SearchVO {
+public class SearchVO implements Serializable {
     private List<Meal> meals;
     private List<Material> materials;
     private List<?> dataList;

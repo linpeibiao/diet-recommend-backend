@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author xiaohu
  * @date 2023/06/26/ 13:05
@@ -14,7 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MealGradeVo {
+public class MealGradeVo implements Serializable {
     private String mealName;
     private String tag;
     private Integer grade;
