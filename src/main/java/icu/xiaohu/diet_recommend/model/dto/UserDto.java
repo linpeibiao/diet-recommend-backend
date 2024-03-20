@@ -3,13 +3,15 @@ package icu.xiaohu.diet_recommend.model.dto;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author xiaohu
  * @date 2022/11/09/ 17:30
  * @description
  */
 @Data
-public class UserDto {
+public class UserDto implements Serializable {
     /**
      * 主键
      */

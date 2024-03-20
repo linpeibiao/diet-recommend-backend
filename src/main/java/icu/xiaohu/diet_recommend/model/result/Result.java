@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author xiaohu
  * @date 2022/11/22/ 15:48
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Result<T> {
+public class Result<T> implements Serializable {
     /**
      * 构造response，code用于前端判断，message可以在前端显示错误信息，视情况传data
      */
