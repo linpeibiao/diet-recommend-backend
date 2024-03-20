@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.xiaohu.diet_recommend.mapper.NutritionalRequirementsMapper">
+
+    <resultMap id="BaseResultMap" type="icu.xiaohu.diet_recommend.model.entity.NutritionalRequirements">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="ageRange" column="age_range" jdbcType="VARCHAR"/>
+            <result property="gender" column="gender" jdbcType="INTEGER"/>
+            <result property="calories" column="calories" jdbcType="INTEGER"/>
+            <result property="proteins" column="proteins" jdbcType="INTEGER"/>
+            <result property="carbohydrates" column="carbohydrates" jdbcType="INTEGER"/>
+            <result property="fats" column="fats" jdbcType="INTEGER"/>
+            <result property="vitamins" column="vitamins" jdbcType="VARCHAR"/>
+            <result property="minerals" column="minerals" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="bmi" column="BMI" jdbcType="FLOAT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,age_range,gender,
+        calories,proteins,carbohydrates,
+        fats,vitamins,minerals,
+        update_time,create_time,BMI
+    </sql>
+</mapper>

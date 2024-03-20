@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.xiaohu.diet_recommend.mapper.DailyRecommendationMapper">
+
+    <resultMap id="BaseResultMap" type="icu.xiaohu.diet_recommend.model.entity.DailyRecommendation">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="date" column="date" jdbcType="TIMESTAMP"/>
+            <result property="mealType" column="meal_type" jdbcType="VARCHAR"/>
+            <result property="mealIds" column="meal_ids" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="recommendationObject" column="recommendation_object" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,date,
+        meal_type,meal_ids,update_time,
+        create_time,recommendation_object
+    </sql>
+</mapper>

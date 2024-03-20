@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.xiaohu.diet_recommend.mapper.MealNutrientsMapper">
+
+    <resultMap id="BaseResultMap" type="icu.xiaohu.diet_recommend.model.entity.MealNutrients">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="mealId" column="meal_id" jdbcType="BIGINT"/>
+            <result property="calories" column="calories" jdbcType="FLOAT"/>
+            <result property="proteins" column="proteins" jdbcType="FLOAT"/>
+            <result property="carbohydrates" column="carbohydrates" jdbcType="FLOAT"/>
+            <result property="fats" column="fats" jdbcType="FLOAT"/>
+            <result property="vitamins" column="vitamins" jdbcType="VARCHAR"/>
+            <result property="minerals" column="minerals" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,meal_id,calories,
+        proteins,carbohydrates,fats,
+        vitamins,minerals,update_time,
+        create_time
+    </sql>
+</mapper>
