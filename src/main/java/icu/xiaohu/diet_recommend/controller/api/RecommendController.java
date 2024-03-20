@@ -9,6 +9,7 @@ import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author xiaohu
@@ -46,6 +48,12 @@ public class RecommendController {
         if (meals == null || meals.isEmpty()){
             meals = recommend.coolRecommend(user.getId());
         }
+        // 再从结果中按照用户口味进行推荐
+//        if (StringUtils.isNoneEmpty(user.getTasteHobby())){
+//            meals = meals.stream().filter(meal -> user.getTasteHobby().equals(meal.getTaste())
+//                    || user.getTasteHobby().equals(meal.getType()))
+//                    .collect(Collectors.toList());
+//        }
         return Result.success(random(meals));
     }
 

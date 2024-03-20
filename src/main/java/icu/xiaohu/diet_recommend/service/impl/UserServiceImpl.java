@@ -243,9 +243,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new BusinessException(ResultCode.PARAMS_ERROR, "密码输入错误");
         }
         // 判断是否已经登陆
-        if (isLogin(account)){
-            return TokenHolder.getToken(account);
-        }
+//        if (isLogin(account)){
+//            return TokenHolder.getToken(account);
+//        }
         // 6. 生成token,保存在redis,并设置有效期
         return loginCommonWork(user, user.getAccount());
     }

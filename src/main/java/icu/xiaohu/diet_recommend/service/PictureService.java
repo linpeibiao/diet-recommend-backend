@@ -8,6 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
  * @description
  */
 public interface PictureService {
+    default void test(){
+        System.out.println("test");
+    }
     /**
      * 上传图片到文件系统
      * @param file
