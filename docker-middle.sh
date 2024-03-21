@@ -14,9 +14,9 @@ docker run -d --name my-rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT
 
 # minio
 # 注意最后两个参数，如果没有设置的话，访问h5后台管理页面回失败（端口号会一直变化）
-docker run -d -p 9000:9000 --name my-minio \
-  -e "MINIO_ACCESS_KEY=username" \
-  -e "MINIO_SECRET_KEY=password" \
+docker run -d -p 9000:9000 -p 9090:9090 --name my-minio \
+  -e "MINIO_ACCESS_KEY=linxiaohu" \
+  -e "MINIO_SECRET_KEY=linpeibiaoxiaohu" \
   -v /home/minio/data1:/data \
   -v /home/minio/cos.json:/root/.minio/cors-config.json \
   minio/minio server /data --console-address ":9000" --address ":9090"
