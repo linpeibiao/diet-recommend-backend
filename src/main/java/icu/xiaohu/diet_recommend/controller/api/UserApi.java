@@ -4,23 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
-import icu.xiaohu.diet_recommend.model.entity.Plan;
-import icu.xiaohu.diet_recommend.model.entity.User;
-import icu.xiaohu.diet_recommend.model.entity.UserBodyInfo;
-import icu.xiaohu.diet_recommend.model.entity.UserMeal;
+import icu.xiaohu.diet_recommend.model.entity.*;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.model.vo.MealGradeVo;
-import icu.xiaohu.diet_recommend.service.IPlanService;
-import icu.xiaohu.diet_recommend.service.IUserMealService;
-import icu.xiaohu.diet_recommend.service.UserBodyInfoService;
-import icu.xiaohu.diet_recommend.service.UserService;
+import icu.xiaohu.diet_recommend.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**
@@ -40,6 +35,8 @@ public class UserApi {
     private IPlanService planService;
     @Resource
     private UserBodyInfoService userBodyInfoService;
+    @Resource
+    private FoodIntakeRecordsService foodIntakeRecordsService;
 
     @ApiOperation("创建个人计划")
     @PostMapping("/create-plan/")
@@ -121,6 +118,36 @@ public class UserApi {
         return Result.success(userBodyInfoService.getOne(new QueryWrapper<UserBodyInfo>().eq("user_id", user.getId())));
 
     }
+
+    @ApiOperation("用户新增饮食记录")
+    @PostMapping("/add-food-intake-record")
+    public Result<Boolean> addFoodIntakeRecord(HttpServletRequest request, @RequestBody FoodIntakeRecords foodIntakeRecords){
+
+        return Result.success(foodIntakeRecordsService.add(foodIntakeRecords));
+    }
+
+    @ApiOperation("用户新增饮食记录")
+    @PutMapping("/edit-food-intake-record")
+    public Result<Integer> editFoodIntakeRecord(HttpServletRequest request, @RequestBody FoodIntakeRecords foodIntakeRecords){
+
+        return Result.success(foodIntakeRecordsService.update(foodIntakeRecords));
+    }
+
+    @ApiOperation("用户获取饮食记录")
+    @GetMapping("/get-food-intake-record")
+    public Result<List<FoodIntakeRecords>> getFoodIntakeRecord(HttpServletRequest request){
+
+        return Result.success(foodIntakeRecordsService.getDietRecords());
+    }
+
+    @ApiOperation("用户删除饮食记录")
+    @DeleteMapping("/delete-food-intake-record/{recordId}")
+    public Result<Boolean> deleteFoodIntakeRecord(HttpServletRequest request, @PathParam("recordId") Long recordId){
+
+        return Result.success(foodIntakeRecordsService.deleteRecord(recordId));
+    }
+
+
 
 
 }

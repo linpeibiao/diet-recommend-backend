@@ -2,6 +2,9 @@ package icu.xiaohu.diet_recommend.service;
 
 import icu.xiaohu.diet_recommend.model.entity.FoodIntakeRecords;
 import com.baomidou.mybatisplus.extension.service.IService;
+import icu.xiaohu.diet_recommend.service.impl.FoodIntakeRecordsServiceImpl;
+
+import java.util.List;
 
 /**
 * @author xiaohu
@@ -10,4 +13,37 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface FoodIntakeRecordsService extends IService<FoodIntakeRecords> {
 
+    /**
+     * 用户新增饮食记录
+     * @param foodIntakeRecords
+     * @return
+     */
+    boolean add(FoodIntakeRecords foodIntakeRecords);
+
+    /**
+     * 用户编辑饮食记录
+     * @param foodIntakeRecords
+     * @return
+     */
+    int update(FoodIntakeRecords foodIntakeRecords);
+
+    /**
+     * 获取饮食记录
+     * @return
+     */
+    List<FoodIntakeRecords> getDietRecords();
+
+    /**
+     * 通过id删除记录
+     * @param recordId
+     * @return
+     */
+    boolean deleteRecord(Long recordId);
+
+    /**
+     * 批量删除记录
+     * @param recordIds
+     * @return
+     */
+    int deleteRecords(List<Long> recordIds);
 }
