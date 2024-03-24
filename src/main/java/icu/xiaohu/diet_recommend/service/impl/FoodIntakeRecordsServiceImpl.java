@@ -41,7 +41,7 @@ public class FoodIntakeRecordsServiceImpl extends ServiceImpl<FoodIntakeRecordsM
     }
 
     @Override
-    public int update(FoodIntakeRecords foodIntakeRecords) {
+    public int updateBy(FoodIntakeRecords foodIntakeRecords) {
         // 获取当前用户
         User user = UserHolder.get();
         // 获取数据库数据
@@ -55,7 +55,8 @@ public class FoodIntakeRecordsServiceImpl extends ServiceImpl<FoodIntakeRecordsM
         if (!user.getId().equals(foodIntakeRecord.getUserId())){
             throw new BusinessException(ResultCode.NO_AUTH, "您无权限更新该记录");
         }
-        return this.update(foodIntakeRecords);
+        boolean b = this.updateById(foodIntakeRecords);
+        return b ? 1 : 0;
     }
 
     @Override
@@ -82,7 +83,7 @@ public class FoodIntakeRecordsServiceImpl extends ServiceImpl<FoodIntakeRecordsM
         if (!user.getId().equals(foodIntakeRecord.getUserId())){
             throw new BusinessException(ResultCode.NO_AUTH, "您无权限删除该记录");
         }
-        return this.deleteRecord(recordId);
+        return this.removeById(recordId);
     }
 
     @Override

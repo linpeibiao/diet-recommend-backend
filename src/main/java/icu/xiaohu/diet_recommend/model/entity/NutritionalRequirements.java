@@ -18,7 +18,7 @@ public class NutritionalRequirements implements Serializable {
     /**
      * 主键id
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**

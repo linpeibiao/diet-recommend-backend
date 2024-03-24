@@ -25,7 +25,7 @@ public interface FoodIntakeRecordsService extends IService<FoodIntakeRecords> {
      * @param foodIntakeRecords
      * @return
      */
-    int update(FoodIntakeRecords foodIntakeRecords);
+    int updateBy(FoodIntakeRecords foodIntakeRecords);
 
     /**
      * 获取饮食记录

@@ -126,11 +126,11 @@ public class UserApi {
         return Result.success(foodIntakeRecordsService.add(foodIntakeRecords));
     }
 
-    @ApiOperation("用户新增饮食记录")
+    @ApiOperation("用户编辑饮食记录")
     @PutMapping("/edit-food-intake-record")
     public Result<Integer> editFoodIntakeRecord(HttpServletRequest request, @RequestBody FoodIntakeRecords foodIntakeRecords){
 
-        return Result.success(foodIntakeRecordsService.update(foodIntakeRecords));
+        return Result.success(foodIntakeRecordsService.updateBy(foodIntakeRecords));
     }
 
     @ApiOperation("用户获取饮食记录")
@@ -142,7 +142,7 @@ public class UserApi {
 
     @ApiOperation("用户删除饮食记录")
     @DeleteMapping("/delete-food-intake-record/{recordId}")
-    public Result<Boolean> deleteFoodIntakeRecord(HttpServletRequest request, @PathParam("recordId") Long recordId){
+    public Result<Boolean> deleteFoodIntakeRecord(HttpServletRequest request, @PathVariable("recordId") Long recordId){
 
         return Result.success(foodIntakeRecordsService.deleteRecord(recordId));
     }

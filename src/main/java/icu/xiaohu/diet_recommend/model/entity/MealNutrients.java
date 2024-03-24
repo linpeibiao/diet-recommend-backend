@@ -18,7 +18,7 @@ public class MealNutrients implements Serializable {
     /**
      * 主键id
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
