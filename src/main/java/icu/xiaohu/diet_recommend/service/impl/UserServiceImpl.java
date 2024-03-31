@@ -11,9 +11,14 @@ import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.mapper.UserMapper;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
+import icu.xiaohu.diet_recommend.model.dto.UserMyInfoDTO;
+import icu.xiaohu.diet_recommend.model.entity.Plan;
 import icu.xiaohu.diet_recommend.model.entity.User;
+import icu.xiaohu.diet_recommend.model.entity.UserBodyInfo;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.model.vo.LoginUser;
+import icu.xiaohu.diet_recommend.service.IPlanService;
+import icu.xiaohu.diet_recommend.service.UserBodyInfoService;
 import icu.xiaohu.diet_recommend.service.UserService;
 import icu.xiaohu.diet_recommend.util.CodeGenerator;
 import icu.xiaohu.diet_recommend.util.JwtHelper;
@@ -26,6 +31,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -56,6 +62,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private UserBodyInfoService userBodyInfoService;
+    @Resource
+    private IPlanService planService;
 
     @Override
     public User curUser(HttpServletRequest request) {
@@ -326,6 +337,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             userList.add(user);
         }
         return this.updateBatchById(userList, 100);
+    }
+
+    @Override
+    public UserMyInfoDTO getMyInfo() {
+        User user = UserHolder.get();
+        Long userId = user.getId();
+        UserMyInfoDTO userMyInfoDTO = UserMyInfoDTO.builder().userBodyInfo(userBodyInfoService.getOne(new LambdaUpdateWrapper<UserBodyInfo>().eq(UserBodyInfo::getUserId, userId))).build();
+        UserDto userDto = BeanUtil.toBean(getById(userId), UserDto.class);
+        userMyInfoDTO.setUserDto(userDto);
+        userMyInfoDTO.setPlan(planService.getOne(new LambdaUpdateWrapper<Plan>().eq(Plan::getUserId, userId)));
+        return userMyInfoDTO;
     }
 
     private String loginCommonWork(User user, String keyword){

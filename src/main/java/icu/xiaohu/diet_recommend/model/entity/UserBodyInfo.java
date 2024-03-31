@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="t_user_body_info")
 @Data
+@Builder
 public class UserBodyInfo implements Serializable {
     /**
      * 主键id

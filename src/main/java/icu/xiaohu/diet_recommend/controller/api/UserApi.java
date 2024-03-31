@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
+import icu.xiaohu.diet_recommend.model.dto.UserMyInfoDTO;
 import icu.xiaohu.diet_recommend.model.entity.*;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
@@ -146,6 +147,15 @@ public class UserApi {
 
         return Result.success(foodIntakeRecordsService.deleteRecord(recordId));
     }
+
+    @ApiOperation("获取个人主页信息")
+    @GetMapping("/get-my-info")
+    public Result<UserMyInfoDTO> getMyInfo(HttpServletRequest request){
+
+        return Result.success(userService.getMyInfo());
+    }
+
+
 
 
 

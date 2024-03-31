@@ -2,6 +2,7 @@ package icu.xiaohu.diet_recommend.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
+import icu.xiaohu.diet_recommend.model.dto.UserMyInfoDTO;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.vo.LoginUser;
 
@@ -82,4 +83,10 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean unBanUserByIds(List<Long> ids);
+
+    /**
+     * 获取用户主页信息
+     * @return
+     */
+    UserMyInfoDTO getMyInfo();
 }

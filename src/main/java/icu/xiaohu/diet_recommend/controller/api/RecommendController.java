@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -79,13 +81,26 @@ public class RecommendController {
      * @param meals
      * @return
      */
-    private List<Meal> random(List<Meal> meals){
-        List<Meal> res = new ArrayList<>();
-        // 返回三成的数据
-        for (int i = 0; i < meals.size() / 3; i++){
-            res.add(meals.get((int) (Math.random() * meals.size())));
+    private List<Meal> random(List<Meal> meals) {
+        // 如果不足三个，返回全部
+        if (meals.size() < 3) {
+            return new ArrayList<>(meals);
         }
-        return res.isEmpty() ? meals : res;
+
+        Set<Integer> selectedIndices = new HashSet<>();
+        List<Meal> res = new ArrayList<>();
+        // 确定返回的数量，向上取整
+        int count = (int) Math.ceil(meals.size() / 3.0);
+
+        while (res.size() < count) {
+            int index = (int) (Math.random() * meals.size());
+            // 仅当该索引未被选中时才添加到结果列表
+            if (selectedIndices.add(index)) {
+                res.add(meals.get(index));
+            }
+        }
+
+        return res;
     }
 
 }
