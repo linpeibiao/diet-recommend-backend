@@ -77,6 +77,25 @@ public class UserApi {
         return Result.success(plan);
     }
 
+    @ApiOperation("删除个人计划")
+    @DeleteMapping("/delete-plan/{planId}")
+    public Result<Boolean> deletePlan(HttpServletRequest request, @PathVariable("planId") Long planId){
+        if (planId == null){
+            throw new BusinessException(ResultCode.PARAMS_ERROR, "参数不能为空");
+        }
+        User user = UserHolder.get();
+        // 判断该计划是否为当前操作用户所创建
+        Plan curPlan = planService.getById(planId);
+        if (curPlan == null){
+            throw new BusinessException(ResultCode.NOT_FOUND);
+        }
+        if (!curPlan.getUserId().equals(user.getId())){
+            throw new BusinessException(ResultCode.NO_AUTH);
+        }
+
+        return Result.success(planService.removeById(planId));
+    }
+
     @ApiOperation("用户餐品评分")
     @PostMapping("/meal-grade/")
     public Result<Boolean> mealGrade(@RequestBody List<UserMeal> userMeals){
@@ -126,7 +145,7 @@ public class UserApi {
     }
 
     @ApiOperation("编辑当前用户身体信息")
-    @PostMapping("/set-cur-body-info/")
+    @PostMapping("/set-cur-body-info")
     public Result<UserBodyInfo> setCurBodyInfo(HttpServletRequest request, @RequestBody UserBodyInfo userBodyInfo){
         User user = userService.curUser(request);
         UserBodyInfo temp = userBodyInfoService.getOne(new QueryWrapper<UserBodyInfo>().eq("user_id", user.getId()));

@@ -1,5 +1,6 @@
 package icu.xiaohu.diet_recommend.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import lombok.Data;
 
@@ -65,11 +66,13 @@ public class UserDto implements Serializable {
     /**
      * 用户角色ID
      */
+    @JsonIgnore
     private Long roleId;
 
     /**
      * 用户角色
      */
+    @JsonIgnore
     private UserRole userRole;
 
 
@@ -77,6 +80,7 @@ public class UserDto implements Serializable {
     /**
      * 角色名称
      */
+    @JsonIgnore
     private UserRole roleName;
 
     private String remark;

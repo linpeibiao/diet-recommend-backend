@@ -184,16 +184,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             update.set("real_name", realName);
         }
 
-        // 判断账号是否唯一
-        if (accountIsExist(account)){
-            throw new BusinessException(ResultCode.FAIL,"账号已经存在");
-        }else{
-            update.set("real_name", account);
-        }
+//        // 判断账号是否唯一
+//        if (accountIsExist(account)){
+//            throw new BusinessException(ResultCode.FAIL,"账号已经存在");
+//        }else{
+//            update.set("real_name", account);
+//        }
         Long userId = curUser(request).getId();
         update.eq("id", userId);
         // 保存更新
-        boolean isSuccess = update(update);
+        User updateUser = BeanUtil.copyProperties(userDto, User.class);
+        boolean isSuccess = updateById(updateUser);
         if (isSuccess){
             User user = this.getById(userId);
             // 更新用户缓存信息
