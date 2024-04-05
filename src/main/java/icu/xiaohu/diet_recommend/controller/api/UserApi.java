@@ -66,6 +66,9 @@ public class UserApi {
         User user = UserHolder.get();
         // 判断该计划是否为当前操作用户所创建
         Plan curPlan = planService.getById(plan);
+        if (curPlan == null){
+            throw new BusinessException(ResultCode.NOT_FOUND);
+        }
         if (!curPlan.getUserId().equals(user.getId())){
             throw new BusinessException(ResultCode.NO_AUTH);
         }
