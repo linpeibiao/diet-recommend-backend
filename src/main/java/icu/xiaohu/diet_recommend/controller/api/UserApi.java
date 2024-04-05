@@ -10,6 +10,7 @@ import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
 import icu.xiaohu.diet_recommend.model.vo.MealGradeVo;
 import icu.xiaohu.diet_recommend.service.*;
+import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,23 @@ public class UserApi {
     public Result<List<Plan>> queryPlan(HttpServletRequest request){
         List<Plan> plans = planService.list(new QueryWrapper<Plan>().eq("user_id", userService.curUser(request).getId()));
         return Result.success(plans);
+    }
+
+    @ApiOperation("编辑个人计划")
+    @PutMapping("/edit-plan/")
+    public Result<Plan> queryPlan(HttpServletRequest request, @RequestBody Plan plan){
+        if (plan == null){
+            throw new BusinessException(ResultCode.PARAMS_ERROR, "参数不能为空");
+        }
+        User user = UserHolder.get();
+        // 判断该计划是否为当前操作用户所创建
+        Plan curPlan = planService.getById(plan);
+        if (!curPlan.getUserId().equals(user.getId())){
+            throw new BusinessException(ResultCode.NO_AUTH);
+        }
+        planService.updateById(plan);
+
+        return Result.success(plan);
     }
 
     @ApiOperation("用户餐品评分")

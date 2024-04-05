@@ -1,6 +1,7 @@
 package icu.xiaohu.diet_recommend.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import icu.xiaohu.diet_recommend.anotation.AuthCheck;
@@ -11,6 +12,7 @@ import icu.xiaohu.diet_recommend.model.entity.Menu;
 import icu.xiaohu.diet_recommend.model.entity.Plan;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.service.IPlanService;
+import icu.xiaohu.diet_recommend.util.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,9 @@ public class PlanController {
         if (pageNum <= 0 || pageSize <= 0){
             return Result.fail("分页参数错误, pageNum、pageSize 要大于0");
         }
-        IPage<Plan> list = planService.page(new Page<Plan>(pageNum, pageSize));
+
+        Long userId = UserHolder.get().getId();
+        IPage<Plan> list = planService.page(new Page<Plan>(pageNum, pageSize), new LambdaQueryWrapper<Plan>().eq(Plan::getUserId, userId));
         return Result.success(list);
     }
 }
