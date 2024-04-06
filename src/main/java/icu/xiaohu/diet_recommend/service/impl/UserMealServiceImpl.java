@@ -38,11 +38,11 @@ import java.util.Set;
  */
 @Service
 public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> implements IUserMealService {
-    @Autowired
+    @Resource
     private IMealService mealService;
-    @Autowired
+    @Resource
     private UserMealMapper userMealMapper;
-    @Autowired
+    @Resource
     private Recommend recommend;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -99,6 +99,14 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
 
         return this.saveBatch(userMeals);
 
+    }
+
+    @Override
+    public boolean add(UserMeal userMeal) {
+        User user = UserHolder.get();
+        userMeal.setUserId(user.getId());
+
+        return save(userMeal);
     }
 
     @Override

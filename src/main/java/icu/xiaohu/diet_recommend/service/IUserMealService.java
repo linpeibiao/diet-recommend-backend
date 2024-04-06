@@ -37,6 +37,8 @@ public interface IUserMealService extends IService<UserMeal> {
      */
     boolean add(List<UserMeal> userMeals);
 
+    boolean add(UserMeal userMeals);
+
     /**
      * 获取当前用户的评价
      * @return

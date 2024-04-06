@@ -97,9 +97,9 @@ public class UserApi {
     }
 
     @ApiOperation("用户餐品评分")
-    @PostMapping("/meal-grade/")
-    public Result<Boolean> mealGrade(@RequestBody List<UserMeal> userMeals){
-        if (userMeals == null || userMeals.isEmpty()) {
+    @PostMapping("/meal-grade")
+    public Result<Boolean> mealGrade(@RequestBody UserMeal userMeals){
+        if (userMeals == null) {
             throw new BusinessException(ResultCode.PARAMS_ERROR, "参数为空");
         }
         boolean isSuccess = userMealService.add(userMeals);
