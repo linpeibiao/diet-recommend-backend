@@ -15,4 +15,11 @@
         WHERE user_id = #{userId}
         ORDER By tum.update_time;
     </select>
+
+    <select id="getMyMealGrades" resultType="icu.xiaohu.diet_recommend.model.dto.MyMealGradeDto">
+        select m.*, um.grade from t_user_meal um
+                                      left join t_meal m on m.id = um.meal_id
+        where um.user_id = #{userId}
+        order by um.grade desc;
+    </select>
 </mapper>

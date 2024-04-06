@@ -1,5 +1,7 @@
 package icu.xiaohu.diet_recommend.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import icu.xiaohu.diet_recommend.model.dto.MyMealGradeDto;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -58,4 +60,11 @@ public interface IUserMealService extends IService<UserMeal> {
      * @return
      */
     boolean clickMeal(Long mealId);
+
+
+    /**
+     * 获取用户餐品评价
+     * @return
+     */
+    List<MyMealGradeDto> getMyMealGrades();
 }

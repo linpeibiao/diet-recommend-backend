@@ -2,8 +2,10 @@ package icu.xiaohu.diet_recommend.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.constant.RedisConstant;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
+import icu.xiaohu.diet_recommend.model.dto.MyMealGradeDto;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
@@ -146,5 +148,11 @@ public class UserMealServiceImpl extends ServiceImpl<UserMealMapper, UserMeal> i
         }
         stringRedisTemplate.opsForZSet().incrementScore(key, JSON.toJSONString(meal), increment);
         return true;
+    }
+
+    @Override
+    public List<MyMealGradeDto> getMyMealGrades() {
+        User user = UserHolder.get();
+        return userMealMapper.getMyMealGrades(user.getId());
     }
 }

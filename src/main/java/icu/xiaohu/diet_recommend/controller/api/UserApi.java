@@ -3,6 +3,7 @@ package icu.xiaohu.diet_recommend.controller.api;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
+import icu.xiaohu.diet_recommend.model.dto.MyMealGradeDto;
 import icu.xiaohu.diet_recommend.model.dto.UserDto;
 import icu.xiaohu.diet_recommend.model.dto.UserMyInfoDTO;
 import icu.xiaohu.diet_recommend.model.entity.*;
@@ -196,7 +197,11 @@ public class UserApi {
     }
 
 
-
+    @ApiOperation("获取餐品评分信息")
+    @GetMapping("/get-my-meal-grades")
+    public Result<List<MyMealGradeDto>> getMyMealGrades(HttpServletRequest request){
+        return Result.success(userMealService.getMyMealGrades());
+    }
 
 
 
