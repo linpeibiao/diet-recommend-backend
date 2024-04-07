@@ -35,7 +35,7 @@ public class PlanController {
 
     @ApiOperation("用户计划列表")
     @PostMapping("/list/{pageNum}/{pageSize}")
-    @AuthCheck(mustRole = UserRole.ADMIN)
+//    @AuthCheck(mustRole = UserRole.ADMIN)
     public Result<IPage<Plan>> listQuery(@PathVariable("pageNum")int pageNum,
                                          @PathVariable("pageSize")int pageSize){
         if (pageNum <= 0 || pageSize <= 0){
