@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -16,6 +17,7 @@ import lombok.Data;
  */
 @TableName(value ="t_food_intake_records")
 @Data
+@Builder
 public class FoodIntakeRecords implements Serializable {
     /**
      * 

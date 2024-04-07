@@ -12,6 +12,8 @@ import icu.xiaohu.diet_recommend.util.UserHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +39,16 @@ public class FoodIntakeRecordsServiceImpl extends ServiceImpl<FoodIntakeRecordsM
         }
         foodIntakeRecords.setUserId(user.getId());
         foodIntakeRecords.setDate(new Date());
+
+        // 判断今天是否已经添加过了
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(foodIntakeRecords.getDate());
+        LambdaQueryWrapper<FoodIntakeRecords> queryWrapper = new LambdaQueryWrapper<FoodIntakeRecords>()
+                .eq(FoodIntakeRecords::getMealIds, foodIntakeRecords.getMealIds())
+                .likeRight(FoodIntakeRecords::getDate, date);
+        List<FoodIntakeRecords> one = this.list(queryWrapper);
+        if (!one.isEmpty()){
+            return false;
+        }
         return this.save(foodIntakeRecords);
     }
 

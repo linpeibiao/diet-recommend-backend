@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -201,6 +202,19 @@ public class UserApi {
     @GetMapping("/get-my-meal-grades")
     public Result<List<MyMealGradeDto>> getMyMealGrades(HttpServletRequest request){
         return Result.success(userMealService.getMyMealGrades());
+    }
+
+
+    @ApiOperation("采用推荐餐品作为今日饮食")
+    @PostMapping("/adopt")
+    public Result<Boolean> adoptMealRecommend(@RequestBody Meal meal){
+        // 新增饮食记录
+        FoodIntakeRecords foodIntakeRecords = FoodIntakeRecords.builder().mealType(meal.getType())
+                .date(new Date())
+                .mealIds(meal.getName())
+                .build();
+        boolean add = foodIntakeRecordsService.add(foodIntakeRecords);
+        return Result.success(add);
     }
 
 
