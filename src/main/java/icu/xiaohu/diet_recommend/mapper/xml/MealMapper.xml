@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="icu.xiaohu.diet_recommend.mapper.MealMapper">
 
+    <select id="recommendSearch" resultType="icu.xiaohu.diet_recommend.model.entity.Meal">
+        SELECT * FROM t_meal
+        <where>
+            <if test="mealRecommendSearchVO.type != null and mealRecommendSearchVO.type != ''">
+                AND type LIKE CONCAT('%', #{mealRecommendSearchVOtype}, '%')
+            </if>
+            <if test="mealRecommendSearchVO.tag != null and mealRecommendSearchVO.tag != ''">
+                AND tag LIKE CONCAT('%', #{mealRecommendSearchVO.tag}, '%')
+            </if>
+            <if test="mealRecommendSearchVO.phase != null and mealRecommendSearchVO.phase != ''">
+                AND tag LIKE CONCAT('%', #{mealRecommendSearchVO.phase}, '%')
+            </if>
+            <if test="mealRecommendSearchVO.bmi != null and mealRecommendSearchVO.bmi != ''">
+                AND tag LIKE CONCAT('%', #{mealRecommendSearchVO.bmi}, '%')
+            </if>
+            <if test="mealRecommendSearchVO.gender != null">
+                AND tag = #{mealRecommendSearchVO.gender}
+            </if>
+        </where>
+
+    </select>
 </mapper>

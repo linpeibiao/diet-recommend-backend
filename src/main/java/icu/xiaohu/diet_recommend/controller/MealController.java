@@ -6,6 +6,7 @@ import icu.xiaohu.diet_recommend.exception.BusinessException;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.model.vo.MealRecommendSearchVO;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -89,6 +90,20 @@ public class MealController {
             return Result.fail("分页参数错误, pageNum、pageSize 要大于0");
         }
         IPage<Meal> list = mealService.listQuery(meal, pageNum, pageSize);
+        return Result.success(list);
+    }
+
+
+    @ApiOperation("学生饮食搭配推荐")
+    @PostMapping("/recommend-search/{pageNum}/{pageSize}")
+    public Result<IPage<Meal>> listQuery(@RequestBody MealRecommendSearchVO recommendSearchVO,
+                                         @PathVariable("pageNum")int pageNum,
+                                         @PathVariable("pageSize")int pageSize){
+        if (pageNum <= 0 || pageSize <= 0){
+            pageNum = 1;
+            pageSize = 10;
+        }
+        IPage<Meal> list = mealService.recommendSearch(recommendSearchVO, pageNum, pageSize);
         return Result.success(list);
     }
 

@@ -80,10 +80,9 @@ public class Meal implements Serializable {
     private Long createUserId;
 
     /**
-     * 备用字段1
+     * 标签
      */
-    @JsonIgnore
-    private String backup1;
+    private String tag;
 
     /**
      * 备用字段2

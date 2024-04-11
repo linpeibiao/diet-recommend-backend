@@ -61,7 +61,6 @@ public class DataSourcesTest {
                 String dishName = li.select("h4").first().text();
                 meal.setName(dishName);
                 String detail = li.select("h4 > a").first().attr("href");
-                meal.setBackup1(detail);
                 String picUrl = "https:" + li.select("img").first().attr("data-src");
                 meal.setUrl(picUrl);
                 String mainMaterial = li.select("p").first().text().replace("原料", "");

@@ -1,8 +1,10 @@
 package icu.xiaohu.diet_recommend.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import icu.xiaohu.diet_recommend.constant.MessageStatus;
 import icu.xiaohu.diet_recommend.constant.MessageType;
@@ -14,7 +16,7 @@ import icu.xiaohu.diet_recommend.model.entity.Message;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
-import icu.xiaohu.diet_recommend.server.UserWebServer;
+import icu.xiaohu.diet_recommend.model.vo.MealRecommendSearchVO;
 import icu.xiaohu.diet_recommend.server.WebSocketServer;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -45,6 +47,8 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
     private UserService userService;
     @Resource(name = "userWebServer")
     private WebSocketServer userWebServer;
+    @Resource
+    private MealMapper mealMapper;
 
     @Override
     public boolean add(List<Meal> meals, HttpServletRequest request) {
@@ -181,5 +185,23 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
         query.eq("status", 0);
 
         return this.page(new Page<Meal>(pageNum, pageSize), query);
+    }
+
+    @Override
+    public IPage<Meal> recommendSearch(MealRecommendSearchVO recommendSearchVO, int pageNum, int pageSize) {
+        if (recommendSearchVO == null){
+            return this.page(new Page<>(pageNum, pageSize));
+        }
+
+
+        return mealMapper.recommendSearch(recommendSearchVO, new Page<>(pageNum, pageSize));
+    }
+
+    private void addLikeCondition(LambdaQueryWrapper<Meal> queryWrapper,
+                                  SFunction<Meal, ?> column,
+                                  String value) {
+        if (StringUtils.isNotBlank(value)) {
+            queryWrapper.like(column, "%" + value + "%");
+        }
     }
 }

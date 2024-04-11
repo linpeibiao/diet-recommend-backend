@@ -3,6 +3,7 @@ package icu.xiaohu.diet_recommend.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import com.baomidou.mybatisplus.extension.service.IService;
+import icu.xiaohu.diet_recommend.model.vo.MealRecommendSearchVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -63,4 +64,14 @@ public interface IMealService extends IService<Meal> {
      * @return
      */
     IPage<Meal> listQuery(Meal meal, int pageNum, int pageSize);
+
+
+    /**
+     * 学生餐饮搭配
+     * @param recommendSearchVO
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    IPage<Meal> recommendSearch(MealRecommendSearchVO recommendSearchVO, int pageNum, int pageSize);
 }
