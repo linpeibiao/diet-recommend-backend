@@ -9,16 +9,16 @@
                 AND type LIKE CONCAT('%', #{mealRecommendSearchVOtype}, '%')
             </if>
             <if test="mealRecommendSearchVO.tag != null and mealRecommendSearchVO.tag != ''">
-                AND tag LIKE CONCAT('%', #{mealRecommendSearchVO.tag}, '%')
+                or tag LIKE CONCAT('%', #{mealRecommendSearchVO.tag}, '%')
             </if>
             <if test="mealRecommendSearchVO.phase != null and mealRecommendSearchVO.phase != ''">
-                AND tag LIKE CONCAT('%', #{mealRecommendSearchVO.phase}, '%')
+                or tag LIKE CONCAT('%', #{mealRecommendSearchVO.phase}, '%')
             </if>
             <if test="mealRecommendSearchVO.bmi != null and mealRecommendSearchVO.bmi != ''">
-                AND tag LIKE CONCAT('%', #{mealRecommendSearchVO.bmi}, '%')
+                or tag LIKE CONCAT('%', #{mealRecommendSearchVO.bmi}, '%')
             </if>
             <if test="mealRecommendSearchVO.gender != null">
-                AND tag = #{mealRecommendSearchVO.gender}
+                or tag = #{mealRecommendSearchVO.gender}
             </if>
         </where>
 
