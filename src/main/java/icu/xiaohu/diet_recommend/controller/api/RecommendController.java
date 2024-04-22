@@ -56,7 +56,7 @@ public class RecommendController {
 //                    || user.getTasteHobby().equals(meal.getType()))
 //                    .collect(Collectors.toList());
 //        }
-        return Result.success(random(meals));
+        return Result.success(meals);
     }
 
 
