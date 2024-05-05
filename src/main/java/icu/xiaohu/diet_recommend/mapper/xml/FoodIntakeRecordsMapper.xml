@@ -9,7 +9,7 @@
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="date" column="date" jdbcType="TIMESTAMP"/>
             <result property="mealType" column="meal_type" jdbcType="VARCHAR"/>
-            <result property="mealIds" column="meal_ids" jdbcType="VARCHAR"/>
+            <result property="mealName" column="meal_name" jdbcType="VARCHAR"/>
             <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -17,7 +17,7 @@
 
     <sql id="Base_Column_List">
         id,user_id,date,
-        meal_type,meal_ids,remarks,
+        meal_type,meal_name,remarks,
         update_time,create_time
     </sql>
 </mapper>

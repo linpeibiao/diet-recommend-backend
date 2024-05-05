@@ -210,7 +210,8 @@ public class UserApi {
         // 新增饮食记录
         FoodIntakeRecords foodIntakeRecords = FoodIntakeRecords.builder().mealType(meal.getType())
                 .date(new Date())
-                .mealIds(meal.getName())
+                .mealName(meal.getName())
+                .mealId(meal.getId())
                 .build();
         boolean add = foodIntakeRecordsService.add(foodIntakeRecords);
         return Result.success(add);

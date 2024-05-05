@@ -44,7 +44,12 @@ public class FoodIntakeRecords implements Serializable {
     /**
      * 
      */
-    private String mealIds;
+    private String mealName;
+
+    /**
+     * 餐品id
+     */
+    private Long mealId;
 
     /**
      * 备注

@@ -34,7 +34,7 @@ public class FoodIntakeRecordsServiceImpl extends ServiceImpl<FoodIntakeRecordsM
         if (foodIntakeRecords == null){
             throw new BusinessException(ResultCode.PARAMS_ERROR);
         }
-        if (StringUtils.isBlank(foodIntakeRecords.getMealIds())){
+        if (StringUtils.isBlank(foodIntakeRecords.getMealName())){
             throw new BusinessException(ResultCode.PARAMS_ERROR, "请选择餐品");
         }
         foodIntakeRecords.setUserId(user.getId());
@@ -43,7 +43,8 @@ public class FoodIntakeRecordsServiceImpl extends ServiceImpl<FoodIntakeRecordsM
         // 判断今天是否已经添加过了
         String date = new SimpleDateFormat("yyyy-MM-dd").format(foodIntakeRecords.getDate());
         LambdaQueryWrapper<FoodIntakeRecords> queryWrapper = new LambdaQueryWrapper<FoodIntakeRecords>()
-                .eq(FoodIntakeRecords::getMealIds, foodIntakeRecords.getMealIds())
+                .eq(FoodIntakeRecords::getMealName, foodIntakeRecords.getMealName())
+                .eq(FoodIntakeRecords::getUserId, user.getId())
                 .likeRight(FoodIntakeRecords::getDate, date);
         List<FoodIntakeRecords> one = this.list(queryWrapper);
         if (!one.isEmpty()){
