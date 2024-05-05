@@ -23,4 +23,45 @@
         </where>
 
     </select>
+    <select id="getMealAdoptReport" resultType="icu.xiaohu.diet_recommend.model.vo.MealAdoptReportVO">
+
+        SELECT
+            m.name AS meal_name,
+            m.type AS meal_type,
+            AVG(um.grade) AS average_grade,
+            COUNT(fir.meal_id) AS adopt_count,
+            m.ancillary_material as material,
+            m.url as picture,
+            m.description as decription
+        FROM
+            t_meal m
+                LEFT JOIN
+            diet_recommend.t_user_meal um
+            ON
+                m.id = um.meal_id
+                LEFT JOIN
+            diet_recommend.t_food_intake_records fir
+            ON
+                m.id = fir.meal_id
+        <where>
+            m.is_deleted = 0
+            AND um.is_deleted = 0
+            <if test="mealAdoptRequestDTO.startTime != null and mealAdoptRequestDTO.startTime != ''">
+                AND fir.date &gt;= #{mealAdoptRequestDTO.startTime}
+            </if>
+
+            <if test="mealAdoptRequestDTO.endTime != null and mealAdoptRequestDTO.endTime != ''">
+                AND fir.date &lt;= #{mealAdoptRequestDTO.endTime}
+            </if>
+
+            <if test="mealAdoptRequestDTO.mealName != null and mealAdoptRequestDTO.mealName != ''">
+                AND m.name LIKE concat('%', #{mealAdoptRequestDTO.mealName}, '%')
+            </if>
+
+            <if test="mealAdoptRequestDTO.mealType != null and mealAdoptRequestDTO.mealType != ''">
+                AND m.type LIKE concat('%', #{mealAdoptRequestDTO.mealType}, '%')
+            </if>
+        </where>
+        GROUP BY m.id
+    </select>
 </mapper>

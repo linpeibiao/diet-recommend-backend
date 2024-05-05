@@ -10,12 +10,14 @@ import icu.xiaohu.diet_recommend.constant.MessageStatus;
 import icu.xiaohu.diet_recommend.constant.MessageType;
 import icu.xiaohu.diet_recommend.constant.UserRole;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
+import icu.xiaohu.diet_recommend.model.dto.MealAdoptRequestDTO;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.mapper.MealMapper;
 import icu.xiaohu.diet_recommend.model.entity.Message;
 import icu.xiaohu.diet_recommend.model.entity.User;
 import icu.xiaohu.diet_recommend.model.entity.UserMeal;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.model.vo.MealAdoptReportVO;
 import icu.xiaohu.diet_recommend.model.vo.MealRecommendSearchVO;
 import icu.xiaohu.diet_recommend.server.WebSocketServer;
 import icu.xiaohu.diet_recommend.service.IMealService;
@@ -195,6 +197,12 @@ public class MealServiceImpl extends ServiceImpl<MealMapper, Meal> implements IM
 
 
         return mealMapper.recommendSearch(recommendSearchVO, new Page<>(pageNum, pageSize));
+    }
+
+    @Override
+    public IPage<MealAdoptReportVO> getMealAdoptReport(MealAdoptRequestDTO mealAdoptRequestDTO, int pageNum, int pageSize) {
+
+        return mealMapper.getMealAdoptReport(mealAdoptRequestDTO, new Page<>(pageNum, pageSize));
     }
 
     private void addLikeCondition(LambdaQueryWrapper<Meal> queryWrapper,

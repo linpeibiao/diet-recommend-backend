@@ -1,8 +1,10 @@
 package icu.xiaohu.diet_recommend.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import icu.xiaohu.diet_recommend.model.dto.MealAdoptRequestDTO;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import com.baomidou.mybatisplus.extension.service.IService;
+import icu.xiaohu.diet_recommend.model.vo.MealAdoptReportVO;
 import icu.xiaohu.diet_recommend.model.vo.MealRecommendSearchVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,4 +76,14 @@ public interface IMealService extends IService<Meal> {
      * @return
      */
     IPage<Meal> recommendSearch(MealRecommendSearchVO recommendSearchVO, int pageNum, int pageSize);
+
+    /**
+     * 饮食搭配报告
+     * @param mealAdoptRequestDTO
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    IPage<MealAdoptReportVO> getMealAdoptReport(MealAdoptRequestDTO mealAdoptRequestDTO, int pageNum, int pageSize);
+
 }

@@ -3,9 +3,11 @@ package icu.xiaohu.diet_recommend.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import icu.xiaohu.diet_recommend.exception.BusinessException;
+import icu.xiaohu.diet_recommend.model.dto.MealAdoptRequestDTO;
 import icu.xiaohu.diet_recommend.model.entity.Meal;
 import icu.xiaohu.diet_recommend.model.result.Result;
 import icu.xiaohu.diet_recommend.model.result.ResultCode;
+import icu.xiaohu.diet_recommend.model.vo.MealAdoptReportVO;
 import icu.xiaohu.diet_recommend.model.vo.MealRecommendSearchVO;
 import icu.xiaohu.diet_recommend.service.IMealService;
 import io.swagger.annotations.Api;
@@ -104,6 +106,19 @@ public class MealController {
             pageSize = 10;
         }
         IPage<Meal> list = mealService.recommendSearch(recommendSearchVO, pageNum, pageSize);
+        return Result.success(list);
+    }
+
+    @ApiOperation("饮食统计报表")
+    @PostMapping("/meal-adopt-report/{pageNum}/{pageSize}")
+    public Result<IPage<MealAdoptReportVO>> mealAdoptReport(@RequestBody MealAdoptRequestDTO mealAdoptRequestDTO,
+                                                            @PathVariable("pageNum")int pageNum,
+                                                            @PathVariable("pageSize")int pageSize){
+        if (pageNum <= 0 || pageSize <= 0){
+            pageNum = 1;
+            pageSize = 10;
+        }
+        IPage<MealAdoptReportVO> list = mealService.getMealAdoptReport(mealAdoptRequestDTO, pageNum, pageSize);
         return Result.success(list);
     }
 
