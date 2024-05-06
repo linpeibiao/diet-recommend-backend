@@ -217,6 +217,14 @@ public class UserApi {
         return Result.success(add);
     }
 
+    @ApiOperation("获取当前用户角色")
+    @GetMapping("/get-user-role")
+    public Result<String> getUserRole(){
+        User cur = UserHolder.get();
+        User user = userService.getById(cur.getId());
+        return Result.success(user.getRoleName().getRoleName());
+    }
+
 
 
 }
