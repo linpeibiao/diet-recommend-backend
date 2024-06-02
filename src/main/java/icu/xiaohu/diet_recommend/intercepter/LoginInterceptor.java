@@ -11,13 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-import static icu.xiaohu.diet_recommend.constant.RedisConstant.LOGIN_USER_KEY;
 
 
 /**
@@ -34,6 +34,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     private UserService userService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         if ("OPTIONS".equals(request.getMethod())) {
             return true;
         }
@@ -60,6 +62,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info(user.toString());
         // 将 USer 保存在 UserHolder
         UserHolder.save(user);
+        stopWatch.stop();
+        log.info("本次登录拦截消耗时间: {}", stopWatch.getTotalTimeMillis());
         return true;
     }
 
