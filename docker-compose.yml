@@ -1,1 +1,60 @@
 # version = 3.8
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.23
+    container_name: my-mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: your-root-password
+      MYSQL_USER: your-username
+      MYSQL_PASSWORD: your-password
+      MYSQL_DATABASE: your-database
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  redis:
+    image: redis
+    container_name: my-redis
+    environment:
+      REDIS_PASSWORD: your_password
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass your_password
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: my-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: your_user
+      RABBITMQ_DEFAULT_PASS: your_password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  minio:
+    image: minio/minio
+    container_name: my-minio
+    environment:
+      MINIO_ACCESS_KEY: username
+      MINIO_SECRET_KEY: password
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    volumes:
+      - /home/minio/data1:/data
+      - /home/minio/cos.json:/root/.minio/cors-config.json
+    command: server /data --console-address ":9000" --address ":9090"
+
+  nginx:
+    image: nginx
+    container_name: my-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /home/code/diet-recommend/front-ms/dist:/usr/share/nginx/html:ro
+
+volumes:
+  mysql-data:
