@@ -8,4 +8,4 @@ COPY target/diet-recommend-backend-1.0-SNAPSHOT.jar /usr/myapp
 
 WORKDIR /usr/myapp
 
-ENTRYPOINT ["java", "-jar", "-Xmx256m", "diet-recommend-backend-1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "-Xmx512m", "diet-recommend-backend-1.0-SNAPSHOT.jar"]
